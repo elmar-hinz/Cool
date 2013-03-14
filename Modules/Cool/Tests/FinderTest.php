@@ -1,13 +1,20 @@
 <?php namespace Cool;
 
-require_once(__DIR__.'/../Classes/Finder.php');
-
 class FinderTest extends \PHPUnit_Framework_TestCase {
 	
 	private $finder;
 
 	public function setUp() {
+		require_once(__DIR__.'/../../Cool/Classes/LoadTestHelper.php');
+		\Cool\LoadTestHelper::loadAll();
 		$this->finder = new Finder();
+	}
+
+	/**
+	* @test
+	*/
+	public function finder_is_a_singleton() {
+		$this->assertInstanceOf('\Cool\Singleton', $this->finder);
 	}
 
 	/**

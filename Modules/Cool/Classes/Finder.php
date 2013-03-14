@@ -1,6 +1,6 @@
 <?php namespace Cool;
 
-class Finder {
+class Finder implements Singleton {
 
 	private $classRegister = array();
 

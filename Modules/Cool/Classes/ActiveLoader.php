@@ -1,19 +1,19 @@
 <?php namespace Cool;
 
-class Loader {
+class ActiveLoader {
 
-	private $directories;
+	private $bases;
 		
-	function addPath($directory) {
-		$this->directories[] = $directory;
+	function addBase($directory) {
+		$this->bases[] = $directory;
 	}
 
-	function getPathes() {
-		return $this->directories;
+	function getBases() {
+		return $this->bases;
 	}
 
 	function go() {
-		foreach($this->directories as $directory) {
+		foreach($this->bases as $directory) {
 			$this->includePhpFiles($directory);
 		}
 	}

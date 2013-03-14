@@ -1,8 +1,8 @@
 <?php namespace Cool;
 
-require_once(__DIR__.'/../Classes/Loader.php');
+require_once(__DIR__.'/../Classes/ActiveLoader.php');
 
-class LoaderTest extends \PHPUnit_Framework_TestCase {
+class ActiveLoaderTest extends \PHPUnit_Framework_TestCase {
 	
 	private $dir1 = '/tmp/dummy1';
 	private $file1 = '/tmp/dummy1/Dummy1.php';
@@ -29,26 +29,26 @@ class LoaderTest extends \PHPUnit_Framework_TestCase {
 	* @test
 	*/
 	public function includer_can_be_created() {
-		$this->assertInstanceOf('\Cool\Loader', new Loader());
+		$this->assertInstanceOf('\Cool\ActiveLoader', new ActiveLoader());
 	}
 
 	/**
 	* @test
 	*/
-	public function pathes_can_be_added() {
-		$includer = new Loader();
-		$includer->addPath($this->dir1);
-		$includer->addPath($this->dir2);
+	public function bases_can_be_added() {
+		$includer = new ActiveLoader();
+		$includer->addBase($this->dir1);
+		$includer->addBase($this->dir2);
 		$expect = array($this->dir1, $this->dir2);
-		$this->assertEquals($expect, $includer->getPathes());
+		$this->assertEquals($expect, $includer->getBases());
 	}
 
 	/**
 	* @test
 	*/
 	public function files_are_recursively_included() {
-		$includer = new Loader();
-		$includer->addPath($this->dir1);
+		$includer = new ActiveLoader();
+		$includer->addBase($this->dir1);
 		$includer->go();
 		$this->assertEquals(1, $GLOBALS['dummy1']);
 		$this->assertEquals('two', $GLOBALS['dummy2']);
