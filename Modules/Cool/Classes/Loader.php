@@ -12,7 +12,7 @@ class Loader {
 		return $this->directories;
 	}
 
-	function run() {
+	function go() {
 		foreach($this->directories as $directory) {
 			$this->includePhpFiles($directory);
 		}

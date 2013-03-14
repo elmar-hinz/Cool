@@ -49,7 +49,7 @@ class LoaderTest extends \PHPUnit_Framework_TestCase {
 	public function files_are_recursively_included() {
 		$includer = new Loader();
 		$includer->addPath($this->dir1);
-		$includer->run();
+		$includer->go();
 		$this->assertEquals(1, $GLOBALS['dummy1']);
 		$this->assertEquals('two', $GLOBALS['dummy2']);
 	}
