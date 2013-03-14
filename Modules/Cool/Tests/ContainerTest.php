@@ -20,8 +20,8 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
 	/**
 	* @test
 	*/
-	public function instantiate_returns_an_object() {
-		$o = $this->container->instantiate('Cool\Container');
+	public function getInstance_returns_an_object() {
+		$o = $this->container->getInstance('Cool\Container');
 		$this->assertInstanceOf('\Cool\Container', $o);
 	}
 
@@ -29,8 +29,8 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
 	* @test
 	*/
 	public function container_treats_LoadTestHelper_not_as_singleton() {
-		$obj1 = $this->container->instantiate('Cool\LoadTestHelper');
-		$obj2 = $this->container->instantiate('Cool\LoadTestHelper');
+		$obj1 = $this->container->getInstance('Cool\LoadTestHelper');
+		$obj2 = $this->container->getInstance('Cool\LoadTestHelper');
 		$this->assertNotSame($obj1, $obj2);
 	}
 
@@ -38,8 +38,8 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
 	* @test
 	*/
 	public function container_treats_Finder_as_singleton() {
-		$obj1 = $this->container->instantiate('Cool\Finder');
-		$obj2 = $this->container->instantiate('Cool\Finder');
+		$obj1 = $this->container->getInstance('Cool\Finder');
+		$obj2 = $this->container->getInstance('Cool\Finder');
 		$this->assertSame($obj1, $obj2);
 	}
 
@@ -47,7 +47,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
 	* @test
 	*/
 	public function container_treats_itself_as_singleton () {
-		$other = $this->container->instantiate('Cool\Container');
+		$other = $this->container->getInstance('Cool\Container');
 		$this->assertSame($other, $this->container);
 	}
 
@@ -57,7 +57,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase {
 	public function container_can_be_constructed_with_finder_and_treats_it_as_singleton(){
 		$finder = new Finder();
 		$container = new Container($finder);
-		$other = $container->instantiate('Cool\Finder');
+		$other = $container->getInstance('Cool\Finder');
 		$this->assertSame($other, $finder);
 	}
 

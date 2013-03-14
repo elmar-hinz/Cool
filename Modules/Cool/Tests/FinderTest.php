@@ -60,6 +60,32 @@ class FinderTest extends \PHPUnit_Framework_TestCase {
 		$this->finder->getClass('NotThere');
 	}
 
+	/**
+	* @test
+	*/
+	public function getService_finds_any_service_for_Service() {
+		$classname = $this->finder->getService('Cool\Service');
+		$rf = new \ReflectionClass($classname);
+		$this->assertTrue($rf->isSubclassOf('Cool\Service'));
+	}
+
+	/**
+	* @test
+	*/
+	public function getService_finds_DummyService() {
+		$classname = $this->finder->getService('Cool\DummyService');
+		$this->assertEquals('Cool\DummyService', $classname);
+	}
+
+	/**
+	* @test
+	* @expectedException Exception
+	* @expectedExceptionMessage No service found
+	*/
+	public function getService_throws_exeption_if_unsuccessful() {
+		$this->finder->getService('NotThere');
+	}
+
 }
 
 ?>

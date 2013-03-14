@@ -28,12 +28,25 @@ class Finder implements Singleton {
 		}
 	}
 
-	public function getClass($wantedInterface) {
-		if(isset($this->classRegister[$wantedInterface][0])) {
-			return $this->classRegister[$wantedInterface][0];
+	public function getClass($interface) {
+		if(isset($this->classRegister[$interface][0])) {
+			return $this->classRegister[$interface][0];
 		} else {
-			throw new \Exception('No class for interface: ' . $wantedInterface);
+			throw new \Exception('No class for interface: ' . $interface);
 		}
+	}
+
+	public function getService($interface, $mixedCriteria = NULL) {
+		$candidates = array();
+		if(isset($this->classRegister[$interface]))
+			$candidates = $this->classRegister[$interface];
+		foreach($candidates as $candidate) 
+			if($candidate::canServe($mixedCriteria)) return $candidate;
+		throw new \Exception('No service found for: ' . $interface);
+	}
+
+	public function getHooks($interface, $mixedCriteria = NULL) {
+		return array();
 	}
 
 }

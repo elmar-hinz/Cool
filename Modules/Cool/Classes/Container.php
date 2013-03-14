@@ -14,7 +14,19 @@ class Container implements Singleton {
 		$this->singletons[get_class($this)] = $this;
 	}
 	
-	public function instantiate($wantedInterface) {
+	public function getService(string $interface, $mixedCriteria) {
+		$name = $this->finder->getService($interface, $mixedCriteria);
+		return $this->getInstance($name);
+	}
+
+	public function getHooks(string $interface, $mixedCriteria) {
+		$names = $this->finder->getHooks($interface, $mixedCriteria);
+		$hooks = array();
+		foreach($names as $name) $hook[] = $this->getInstance($name);
+		return $hooks;
+	}
+
+	public function getInstance($wantedInterface) {
 		$class =  $this->finder->getClass($wantedInterface);
 		$rc = new \ReflectionClass($class);
 		if(isset($this->singletons[$class])) {
@@ -46,12 +58,11 @@ class Container implements Singleton {
 
 	private function instantiateArguments($argumentNames) {
 		$arguments = array();
-		foreach($argumentNames as $name) $arguments[] = $this->instantiate($name);
+		foreach($argumentNames as $name) $arguments[] = $this->getInstance($name);
 		return $arguments;
 	}
 
 }
 
 ?>
-
 
