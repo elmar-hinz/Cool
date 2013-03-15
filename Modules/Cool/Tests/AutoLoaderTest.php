@@ -7,10 +7,10 @@ class AutoLoaderTest extends \PHPUnit_Framework_TestCase {
 	private $modules = '/tmp/Modules';
 	private $module = '/tmp/Modules/Test';
 	private $classes = '/tmp/Modules/Test/Classes';
-	private $interfaces = '/tmp/Modules/Test/Classes/Interfaces';
+	private $interfaces = '/tmp/Modules/Test/Interfaces';
 	private $class = '/tmp/Modules/Test/Classes/MyClass.php';
 	private $interfaceClass = '/tmp/Modules/Test/Classes/MyInterfaceClass.php';
-	private $interface = '/tmp/Modules/Test/Classes/Interfaces/MyInterface.php';
+	private $interface = '/tmp/Modules/Test/Interfaces/MyInterface.php';
 	private $object;
 
 	function setUp() {

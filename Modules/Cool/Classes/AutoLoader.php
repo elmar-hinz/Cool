@@ -15,6 +15,8 @@ class AutoLoader {
 	public function go() {
 		spl_autoload_register(array($this, 'loadClasses'));
 		spl_autoload_register(array($this, 'loadInterfaces'));
+		spl_autoload_register(array($this, 'loadServices'));
+		spl_autoload_register(array($this, 'loadHooks'));
 	}
 
 	private function loadClasses($className) {
@@ -22,7 +24,15 @@ class AutoLoader {
 	}
 
 	private function loadInterfaces($className) {
-		$this->loadByModuleDir('Classes/Interfaces/', $className);
+		$this->loadByModuleDir('Interfaces/', $className);
+	}
+
+	private function loadServices($className) {
+		$this->loadByModuleDir('Services/', $className);
+	}
+
+	private function loadHooks($className) {
+		$this->loadByModuleDir('Hooks/', $className);
 	}
 
 	private function loadByModuleDir($moduleDirectory, $className) {
