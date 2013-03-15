@@ -47,17 +47,8 @@ class AutoLoaderTest extends \PHPUnit_Framework_TestCase {
 	/**
 	* @test
 	*/
-	public function bases_can_be_added() {
-		$this->object->addBase('/one');
-		$this->object->addBase('/two');
-		$this->assertEquals(array('/one', '/two'), $this->object->getBases());
-	}
-
-	/**
-	* @test
-	*/
-	public function interfaceclass_can_be_loaded() {
-		$this->object->addBase($this->modules);
+	public function interfaceClass_can_be_loaded() {
+		$this->object->addModuleBase($this->modules);
 		$this->object->go();
 		$this->assertTrue(class_exists('\\Test\\MyInterfaceClass', TRUE));
 	}
@@ -66,7 +57,7 @@ class AutoLoaderTest extends \PHPUnit_Framework_TestCase {
 	* @test
 	*/
 	public function interface_can_be_loaded() {
-		$this->object->addBase($this->modules);
+		$this->object->addModuleBase($this->modules);
 		$this->object->go();
 		$this->assertTrue(interface_exists('\\Test\\MyInterface', TRUE));
 	}

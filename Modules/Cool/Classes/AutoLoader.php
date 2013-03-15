@@ -1,16 +1,8 @@
 <?php namespace Cool;
 
-class AutoLoader {
+require_once(__DIR__.'/Loader.php');
 
-	private $bases = array();
-		
-	public function addBase($base) {
-		$this->bases[] = $base;
-	}
-
-	public function getBases() {
-		return $this->bases;
-	}
+class AutoLoader extends Loader {
 
 	public function go() {
 		spl_autoload_register(array($this, 'loadClasses'));
@@ -19,25 +11,25 @@ class AutoLoader {
 		spl_autoload_register(array($this, 'loadHooks'));
 	}
 
-	private function loadClasses($className) {
+	protected function loadClasses($className) {
 		$this->loadByModuleDir('Classes/', $className);
 	}
 
-	private function loadInterfaces($className) {
+	protected function loadInterfaces($className) {
 		$this->loadByModuleDir('Interfaces/', $className);
 	}
 
-	private function loadServices($className) {
+	protected function loadServices($className) {
 		$this->loadByModuleDir('Services/', $className);
 	}
 
-	private function loadHooks($className) {
+	protected function loadHooks($className) {
 		$this->loadByModuleDir('Hooks/', $className);
 	}
 
-	private function loadByModuleDir($moduleDirectory, $className) {
+	protected function loadByModuleDir($moduleDirectory, $className) {
 		$parts = explode('\\', $className);
-		foreach($this->bases as $base) {
+		foreach($this->getModuleBases() as $base) {
 			$path = $base;
 			$path .= '/' . array_shift($parts);
 			$path .= '/'.$moduleDirectory.'/';
