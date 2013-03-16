@@ -8,6 +8,7 @@ Autowiring - Dependency injection for dummies
 ---------------------------------------------
 
 ::
+
         class People { ... }
         class Beer   { ... }
         class Music  { ... } 
