@@ -14,7 +14,7 @@ class Container implements Singleton {
 		$this->singletons[get_class($this)] = $this;
 	}
 	
-	public function getService($interface, $mixedCriteria) {
+	public function getService($interface, $mixedCriteria = NULL) {
 		$name = $this->finder->getService($interface, $mixedCriteria);
 		return $this->getInstance($name);
 	}
