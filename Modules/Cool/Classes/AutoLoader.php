@@ -34,8 +34,11 @@ class AutoLoader extends Loader {
 			$path .= '/' . array_shift($parts);
 			$path .= '/'.$moduleDirectory.'/';
 			$path .= join('/', $parts) . '.php';
-			if(file_exists($path)) 
+			if(file_exists($path)) {
+				ob_start();
 				require_once($path);
+				ob_end_clean();
+			}
 		}
 	}
 }

@@ -29,7 +29,9 @@ class Finder implements Singleton {
 	}
 
 	public function getClass($interface) {
-		if(isset($this->classRegister[$interface][0])) {
+		if(class_exists($interface) ) {
+			return $interface;
+		} else if(isset($this->classRegister[$interface][0])) {
 			return $this->classRegister[$interface][0];
 		} else {
 			throw new \Exception('No class for interface: ' . $interface);
