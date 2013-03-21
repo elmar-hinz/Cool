@@ -76,12 +76,27 @@ By implementing the interface `\Cool\Singleton` an object is managed as
 Singleton by the container, as long as it called by the conatainer
 methods `getInstance`, `getService` or `getHook`.
 
+```php
+	class SantaClaus implements \Cool\Singleton { ... }
+```
+
+The interface itself is empty. It serves as a flag.
+
 Services
 ========
 
 A service is a class, that implements a service interface.
+
+```php
+	class PizzaCourier implements PizzaService { ... }
+```
+
 This interface defines the type of the service and makes the class 
 a service at all. The interface must extend `\Cool\Service`.
+
+```php
+	interface PizzaService extends \Cool\Service { ... }
+```
 
 The interface `\Cool\Service` has one method `canServe($mixedCriteria)`. 
 This is a **static** method, a class method. 
@@ -91,6 +106,14 @@ it asks the classes of the requested service types if they can
 answer to service request, until the first one answers with TRUE.
 That is instantiated to handle the request. 
 
+```php
+	class PizzaCourier implements PizzaService {  
+		static public function canServe($mixedCriteria) { 
+			return ($mixedCriteria['dayOfWeek'] != 'tuesday');
+		}
+	}
+```
+
 The instantiation is done by `getInstance` again. That means that
 a service must provide a construtor that satisfies the criteria of
 `getInstance`.
@@ -99,8 +122,11 @@ It depends on the service type, what it uses as $mixedCriteria and how
 it decides to answer with TRUE or FALSE based on this criteria.
 
 Services are autoregistered. They must stay in a module directory
-named `Services/` to work. 
+named `Services/` to work, while the interface definition belongs 
+into `Interfaces/`.
 
+	MyModule/Interfaces/PizzaService.php
+	MyModule/Services/PizzaCourier.php
 
 Hooks
 =====
