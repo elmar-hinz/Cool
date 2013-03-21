@@ -24,6 +24,11 @@ Features
 	[x] Modularization
 	[x] Autoloading
 
+Installation
+============
+
+	git clone git@github.com:t3elmar/Cool.git
+
 Autowiring - Dependency injection for dummies
 =============================================
 
