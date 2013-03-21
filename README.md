@@ -287,7 +287,7 @@ class Main {
 
 Executable
 ----------
-Path `Executables/helloWorld.sh`:
+Path `Executables/sayHello.sh`:
 ```php
 #! /usr/bin/env php
 <?php
@@ -297,7 +297,7 @@ require_once(__DIR__."/../Configuration/Main.php");
 ```
 make it executable:
 ```sh
-chmod +x Executables/helloWorld.sh
+chmod +x Executables/sayHello.sh
 ```
 
 TODO
