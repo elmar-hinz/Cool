@@ -91,15 +91,14 @@ A service is a class, that implements a service interface.
 class PizzaCourier implements PizzaService { ... }
 ```
 
-This interface defines the type of the service and makes the class 
-a service at all. The interface must extend `\Cool\Service`.
+This interface defines the type of the service. 
+It must extend `\Cool\Service`.
 
 ```php
 interface PizzaService extends \Cool\Service { ... }
 ```
 
-The interface `\Cool\Service` has one method `canServe($mixedCriteria)`. 
-This is a **static** method, a class method. 
+Interface `\Cool\Service` has one method `canServe($mixedCriteria)`. 
 
 The conatainer is called by `getService($serviceType , $mixedCriteria)`.
 It nows asks all classes of the requested service type, if they could
@@ -125,12 +124,20 @@ class PizzaCourier implements PizzaService {
 }
 ```
 
+It depends on the service type, what it uses as $mixedCriteria and how
+it decides to answer with TRUE or FALSE based on this criteria.
+
+**Hint:**
+
+> canServe is a **static** method, a **class method**.
+>
+> To get inheritance work with static methods and variables
+> **late static bindings** are youre friends:
+> http://www.php.net/manual/en/language.oop5.late-static-bindings.php
+
 The instantiation is done by `getInstance` again. That means that
 a service must provide a construtor that satisfies the criteria of
 `getInstance`.
-
-It depends on the service type, what it uses as $mixedCriteria and how
-it decides to answer with TRUE or FALSE based on this criteria.
 
 Services are autoregistered. They must stay in a module directory
 named `Services/` to work, while the interface definition belongs 
