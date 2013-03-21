@@ -7,7 +7,8 @@ class DedicatedDirectoriesLoader extends Loader {
 	protected $classTypes = array('Services', 'Hooks');
 
 	public function go() {
-		array_walk($this->getModuleBases(), array($this,'insideModuleBase'));
+		$moduleBases = $this->getModuleBases();
+		array_walk($moduleBases, array($this,'insideModuleBase'));
 	}
 
 	protected function insideModuleBase($moduleBase) {
