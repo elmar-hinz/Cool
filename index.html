@@ -98,7 +98,7 @@ by a recursive call to <code>getInstance</code>.</p>
 <p>If <code>getInstance()</code> doesn't do what you want, you can still fall back
 to the static call to <code>new</code> or implement your own factory.</p>
 
-<p><strong>Out-look</strong></p>
+<h3>Out-look</h3>
 
 <blockquote>
 <p>The recursive auto-instantiation of objects is a nice feature,
@@ -107,8 +107,6 @@ The strenght is flexibility. Future versions will provide mechanism,
 to replace classes (or interfaces in general) by subclasses 
 through configuration.</p>
 </blockquote>
-
-<p><code>getInstance</code> supports the singleton management of the container.</p>
 
 <h1>Singletons</h1>
 
@@ -134,7 +132,7 @@ It must extend <code>\Cool\Service</code>.</p>
 <div class="highlight"><pre><span class="k">interface</span> <span class="nx">PizzaService</span> <span class="k">extends</span> <span class="nx">\Cool\Service</span> <span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
 </pre></div>
 
-<p>Interface <code>\Cool\Service</code> has one method <code>canServe($mixedCriteria)</code>. </p>
+<p>Interface <code>\Cool\Service</code> has one class method <code>canServe($mixedCriteria)</code>.</p>
 
 <p>When it's method <code>getService($serviceType , $mixedCriteria)</code> is called,
 the container asks all classes of the given service type, if they 
@@ -162,7 +160,7 @@ simplicity by intention. Not to much should happen behind the scenes.</p>
 <span class="p">}</span>
 </pre></div>
 
-<p><strong>Hint:</strong></p>
+<h3>Hint</h3>
 
 <blockquote>
 <p>It depends on the service type, what <code>canServe</code> uses as $mixedCriteria 
@@ -171,13 +169,13 @@ $mixedCriteria in the interface definition,  you should at least
 document it in that place.</p>
 </blockquote>
 
-<p><strong>Hint:</strong></p>
+<h3>Hint</h3>
 
 <blockquote>
 <p>canServe is a <strong>static</strong> method, a <strong>class method</strong>.</p>
 
-<p>To get inheritance work with static methods and variables
-<strong>late static bindings</strong> are youre friends:
+<p>To get inheritance work with static methods and variables,
+<strong>late static bindings</strong> are your friends:
 <a href="http://www.php.net/manual/en/language.oop5.late-static-bindings.php">http://www.php.net/manual/en/language.oop5.late-static-bindings.php</a></p>
 </blockquote>
 
@@ -189,7 +187,7 @@ into <code>Interfaces/</code>.</p>
 MyModule/Services/PizzaCourier.php
 </code></pre>
 
-<p><strong>Hint:</strong></p>
+<h3>Hint</h3>
 
 <blockquote>
 <p>Instantiation is delegated to <code>getInstance</code>. That means that a service 
