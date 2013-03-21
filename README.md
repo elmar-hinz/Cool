@@ -55,19 +55,23 @@ Autowiring, the details
 Autowiring is triggert by a call to `getInstance($classname)` 
 of the container.  It is based on the signature of the constructor. 
 
-For each parameter a classname has to be declared. Else it fails.
+For each parameter in the construtor definition a classname has 
+to be specified. Else it doesn't works and an error is thrown. 
 It tries to to create an instance for each parameter 
 by a recursive call to `getInstance`.
 
 If `getInstance()` doesn't do what you want, you can still fall back
 to the static call to `new` or implement your own factory.
 
-For sure ´getInstance´ supports the singleton management of the container.
+`getInstance` supports the singleton management of the container.
 
-A later version of Cool will give the option to select the actual class
-to use for a paramter interface by configuration. That will be the moment
-it becomes real dependency injection, which real strength is flexibility, 
-not lazyness. 
+**Out-look**
+
+> The recursive auto-instantiation of objects is a nice feature,
+> but not the definition and strength of dependency injection.
+> The strenght is flexibility. Future versions will provide mechanism,
+> to replace classes (or interfaces in general) by subclasses 
+> through configuration.
 
 Singletons
 ==========
@@ -204,8 +208,8 @@ the up-to-date mainstream:
 * Wrap all PHP code into classes, even configurations.
 * Use namespaces.
 * Write configurations as PHP array for now.
-* Put a license in your module.
-* When you call code from other moduels, adhere their licences.
+* Put a license into your module.
+* When you call code from other modules, adhere their licences.
   They may not be as liberal as the Cool framework itself.
 
 
