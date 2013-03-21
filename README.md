@@ -63,8 +63,6 @@ by a recursive call to `getInstance`.
 If `getInstance()` doesn't do what you want, you can still fall back
 to the static call to `new` or implement your own factory.
 
-`getInstance` supports the singleton management of the container.
-
 **Out-look**
 
 > The recursive auto-instantiation of objects is a nice feature,
@@ -72,6 +70,8 @@ to the static call to `new` or implement your own factory.
 > The strenght is flexibility. Future versions will provide mechanism,
 > to replace classes (or interfaces in general) by subclasses 
 > through configuration.
+
+`getInstance` supports the singleton management of the container.
 
 Singletons
 ==========
@@ -106,8 +106,9 @@ Interface `\Cool\Service` has one method `canServe($mixedCriteria)`.
 
 The conatainer is called by `getService($serviceType , $mixedCriteria)`.
 It nows asks all classes of the requested service type, if they could
-answer the request, until the first one answers with TRUE. The
-service type is the interface name of the service.
+answer the request. The first service that answers with TRUE is the 
+winner and get's instantiated. It's a rather simple algorythm to find 
+the winnig service. But it's simplicity by intention. 
 
 ```php
 // ... Concierge get me a pizza service! 
