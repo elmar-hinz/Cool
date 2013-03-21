@@ -104,11 +104,16 @@ interface PizzaService extends \Cool\Service { ... }
 
 Interface `\Cool\Service` has one method `canServe($mixedCriteria)`. 
 
-The conatainer is called by `getService($serviceType , $mixedCriteria)`.
-It nows asks all classes of the requested service type, if they could
-answer the request. The first service that answers with TRUE is the 
-winner and get's instantiated. It's a rather simple algorythm to find 
-the winnig service. But it's simplicity by intention. 
+When the method `getService($serviceType , $mixedCriteria)` is called,
+the container asks all classes of the requested service type, if they 
+could answer to the request. 
+
+The first service that answers with TRUE is the winner. It is 
+instantiated and returned. 
+
+This is a rather simple algorythm to find the winnig service. 
+But it's simplicity by intention. Not to much functionality
+should be veiled. 
 
 ```php
 // ... Concierge get me a pizza service! 
