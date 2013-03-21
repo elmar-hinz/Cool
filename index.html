@@ -98,8 +98,6 @@ by a recursive call to <code>getInstance</code>.</p>
 <p>If <code>getInstance()</code> doesn't do what you want, you can still fall back
 to the static call to <code>new</code> or implement your own factory.</p>
 
-<p><code>getInstance</code> supports the singleton management of the container.</p>
-
 <p><strong>Out-look</strong></p>
 
 <blockquote>
@@ -109,6 +107,8 @@ The strenght is flexibility. Future versions will provide mechanism,
 to replace classes (or interfaces in general) by subclasses 
 through configuration.</p>
 </blockquote>
+
+<p><code>getInstance</code> supports the singleton management of the container.</p>
 
 <h1>Singletons</h1>
 
@@ -136,10 +136,13 @@ It must extend <code>\Cool\Service</code>.</p>
 
 <p>Interface <code>\Cool\Service</code> has one method <code>canServe($mixedCriteria)</code>. </p>
 
-<p>The conatainer is called by <code>getService($serviceType , $mixedCriteria)</code>.
-It nows asks all classes of the requested service type, if they could
-answer the request, until the first one answers with TRUE. The
-service type is the interface name of the service.</p>
+<p>When it's method <code>getService($serviceType , $mixedCriteria)</code> is called,
+the container asks all classes of the given service type, if they 
+could serve the request. The first service that answers with TRUE 
+is the winner. It is instantiated and returned ready to do the job. </p>
+
+<p>This is a rather simple algorythm to find the winnig service, but it's 
+simplicity by intention. Not to much should happen behind the scenes.</p>
 
 <div class="highlight"><pre><span class="c1">// ... Concierge get me a pizza service! </span>
 <span class="c1">// ... We have a surprising monday party and the fridge is empty.</span>
@@ -178,13 +181,6 @@ document it in that place.</p>
 <a href="http://www.php.net/manual/en/language.oop5.late-static-bindings.php">http://www.php.net/manual/en/language.oop5.late-static-bindings.php</a></p>
 </blockquote>
 
-<p><strong>Hint:</strong></p>
-
-<blockquote>
-<p>Instantiation is delegated to <code>getInstance</code>. That means that a service 
-must provide a construtor that satisfies the criteria of <code>getInstance</code>.</p>
-</blockquote>
-
 <p>Services are autoregistered. They must stay in a module directory
 named <code>Services/</code> to work, while the interface definition belongs 
 into <code>Interfaces/</code>.</p>
@@ -192,6 +188,13 @@ into <code>Interfaces/</code>.</p>
 <pre><code>MyModule/Interfaces/PizzaService.php
 MyModule/Services/PizzaCourier.php
 </code></pre>
+
+<p><strong>Hint:</strong></p>
+
+<blockquote>
+<p>Instantiation is delegated to <code>getInstance</code>. That means that a service 
+must provide a construtor that satisfies the criteria of <code>getInstance</code>.</p>
+</blockquote>
 
 <h1>Hooks</h1>
 
