@@ -17,12 +17,12 @@ Cool - a tiny autowiring PHP framework
 Features
 ========
 
-	[x] Autowiring
-	[x] Singletons
-	[x] Services
-	[ ] Hooks
-	[x] Modularization
-	[x] Autoloading
+-	[x] Autowiring
+-	[x] Singletons
+-	[x] Services
+-	[ ] Hooks
+-	[x] Modularization
+-	[x] Autoloading
 
 Installation
 ============
@@ -157,7 +157,7 @@ the up-to-date mainstream:
 * Write configurations as PHP array for now.
 * Put a license in your module.
 * When you call code from other moduels, adhere their licences.
-  They may not be al liberal as the Cool Framework itself.
+  They may not be as liberal as the Cool framework itself.
 
 
 Goals of the design
