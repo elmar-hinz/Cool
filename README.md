@@ -77,7 +77,7 @@ Singleton by the container, as long as it called by the conatainer
 methods `getInstance`, `getService` or `getHook`.
 
 ```php
-	class SantaClaus implements \Cool\Singleton { ... }
+class SantaClaus implements \Cool\Singleton { ... }
 ```
 
 The interface itself is empty. It serves as a flag.
@@ -88,14 +88,14 @@ Services
 A service is a class, that implements a service interface.
 
 ```php
-	class PizzaCourier implements PizzaService { ... }
+class PizzaCourier implements PizzaService { ... }
 ```
 
 This interface defines the type of the service and makes the class 
 a service at all. The interface must extend `\Cool\Service`.
 
 ```php
-	interface PizzaService extends \Cool\Service { ... }
+interface PizzaService extends \Cool\Service { ... }
 ```
 
 The interface `\Cool\Service` has one method `canServe($mixedCriteria)`. 
@@ -107,18 +107,19 @@ answer the request, until the first one answers with TRUE. The
 service type is the interface name of the service.
 
 ```php
-	$pizzaService = $conatiner->getService('MyModule\PizzaService', array('dayOfWeek' => 'monday'));
+$pizzaService = $conatiner->getService(
+								'MyModule\PizzaService', array('dayOfWeek' => 'monday'));
 
-	//  ... asking some pizza services, 
-	//  all closed on monday, until ...
+//  ... asking some pizza services, 
+//  all closed on monday, until ...
 
-	class PizzaCourier implements PizzaService {  
-		// ...
-		static public function canServe($mixedCriteria) { 
-			return ($mixedCriteria['dayOfWeek'] != 'tuesday');
-		}
-		// ...
+class PizzaCourier implements PizzaService {  
+	// ...
+	static public function canServe($mixedCriteria) { 
+		return ($mixedCriteria['dayOfWeek'] != 'tuesday');
 	}
+	// ...
+}
 ```
 
 The instantiation is done by `getInstance` again. That means that
