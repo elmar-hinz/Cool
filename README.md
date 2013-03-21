@@ -63,8 +63,7 @@ by a recursive call to `getInstance`.
 If `getInstance()` doesn't do what you want, you can still fall back
 to the static call to `new` or implement your own factory.
 
-Out-look
-........
+### Out-look ###
 
 > The recursive auto-instantiation of objects is a nice feature,
 > but not the definition and strength of dependency injection.
@@ -130,16 +129,14 @@ class PizzaCourier implements PizzaService {
 }
 ```
 
-Hint
-....
+### Hint ###
 
 > It depends on the service type, what `canServe` uses as $mixedCriteria 
 > and how it evaluates its answer. If you don't set a stricter type for
 > $mixedCriteria in the interface definition,  you should at least 
 > document it in that place.
 
-Hint
-....
+### Hint ###
 
 > canServe is a **static** method, a **class method**.
 >
@@ -154,8 +151,7 @@ into `Interfaces/`.
 	MyModule/Interfaces/PizzaService.php
 	MyModule/Services/PizzaCourier.php
 
-Hint
-....
+### Hint ###
 
 > Instantiation is delegated to `getInstance`. That means that a service 
 > must provide a construtor that satisfies the criteria of `getInstance`.
