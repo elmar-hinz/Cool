@@ -107,10 +107,13 @@ answer the request, until the first one answers with TRUE. The
 service type is the interface name of the service.
 
 ```php
+// ... Concierge get me a pizza service! 
+// ... We have a surprising monday party and the fridge is empty.
+
 $pizzaService = $container->getService(
 				'MyModule\PizzaService', array('dayOfWeek' => 'monday'));
 
-//  ... wiring some pizza services, 
+//  Concierge wiring some pizza services, 
 //  all closed on monday, until suddenly ...
 
 class PizzaCourier implements PizzaService {  
