@@ -110,19 +110,45 @@ not lazyness. </p>
 Singleton by the container, as long as it called by the conatainer
 methods <code>getInstance</code>, <code>getService</code> or <code>getHook</code>.</p>
 
+<div class="highlight"><pre>    <span class="k">class</span> <span class="nc">SantaClaus</span> <span class="k">implements</span> <span class="nx">\Cool\Singleton</span> <span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+</pre></div>
+
+<p>The interface itself is empty. It serves as a flag.</p>
+
 <h1>Services</h1>
 
-<p>A service is a class, that implements a service interface.
-This interface defines the type of the service and makes the class 
+<p>A service is a class, that implements a service interface.</p>
+
+<div class="highlight"><pre>    <span class="k">class</span> <span class="nc">PizzaCourier</span> <span class="k">implements</span> <span class="nx">PizzaService</span> <span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+</pre></div>
+
+<p>This interface defines the type of the service and makes the class 
 a service at all. The interface must extend <code>\Cool\Service</code>.</p>
+
+<div class="highlight"><pre>    <span class="k">interface</span> <span class="nx">PizzaService</span> <span class="k">extends</span> <span class="nx">\Cool\Service</span> <span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+</pre></div>
 
 <p>The interface <code>\Cool\Service</code> has one method <code>canServe($mixedCriteria)</code>. 
 This is a <strong>static</strong> method, a class method. </p>
 
-<p>When the conatainer is called by `getService($serviceType , $mixedCriteria)'
-it asks the classes of the requested service types if they can
-answer to service request, until the first one answers with TRUE.
-That is instantiated to handle the request. </p>
+<p>The conatainer is called by <code>getService($serviceType , $mixedCriteria)</code>.
+It nows asks all classes of the requested service type, if they could
+answer the request, until the first one answers with TRUE. The
+service type is the interface name of the service.</p>
+
+<div class="highlight"><pre>    <span class="nv">$pizzaService</span> <span class="o">=</span> <span class="nv">$conatiner</span><span class="o">-&gt;</span><span class="na">getService</span><span class="p">(</span><span class="s1">'MyModule\PizzaService'</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">'dayOfWeek'</span> <span class="o">=&gt;</span> <span class="s1">'monday'</span><span class="p">));</span>
+
+    <span class="c1">//  ... asking some pizza services, </span>
+    <span class="c1">//  all closed on monday, until ...</span>
+
+    <span class="k">class</span> <span class="nc">PizzaCourier</span> <span class="k">implements</span> <span class="nx">PizzaService</span> <span class="p">{</span>  
+        <span class="c1">// ...</span>
+        <span class="k">static</span> <span class="k">public</span> <span class="k">function</span> <span class="nf">canServe</span><span class="p">(</span><span class="nv">$mixedCriteria</span><span class="p">)</span> <span class="p">{</span> 
+            <span class="k">return</span> <span class="p">(</span><span class="nv">$mixedCriteria</span><span class="p">[</span><span class="s1">'dayOfWeek'</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">'tuesday'</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="c1">// ...</span>
+    <span class="p">}</span>
+</pre></div>
 
 <p>The instantiation is done by <code>getInstance</code> again. That means that
 a service must provide a construtor that satisfies the criteria of
@@ -132,7 +158,12 @@ a service must provide a construtor that satisfies the criteria of
 it decides to answer with TRUE or FALSE based on this criteria.</p>
 
 <p>Services are autoregistered. They must stay in a module directory
-named <code>Services/</code> to work. </p>
+named <code>Services/</code> to work, while the interface definition belongs 
+into <code>Interfaces/</code>.</p>
+
+<pre><code>MyModule/Interfaces/PizzaService.php
+MyModule/Services/PizzaCourier.php
+</code></pre>
 
 <h1>Hooks</h1>
 
