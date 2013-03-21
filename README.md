@@ -134,6 +134,7 @@ Other recommended Directories
 	MyModule/Configuration/
 	MyModule/Executables/
 	MyModule/Documentation/
+	MyModule/Tests/
 
 
 Coding guidelines
@@ -142,13 +143,16 @@ Coding guidelines
 The coding guidelines are recommendations. They don't differ from
 the up-to-date mainstream:
 
-* Use Camelcase as far as possible.
+* Use CamelCase as far as possible.
 * Classnames start uppercase, functions and variables lowercase.
 * Constants are all uppercase: TRUE, FALSE 
 * Respect the security requirements of PHP programming
+* Wrap all PHP code into classes, even configurations.
 * Use namespaces.
-* Put all PHP code into classes, even configurations.
 * Write configurations as PHP array for now.
+* Put a license in your module.
+* When you call code from other moduels, adhere their licences.
+  They may not be al liberal as the Cool Framework itself.
 
 
 Goals of the design
