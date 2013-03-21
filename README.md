@@ -17,12 +17,12 @@ Cool - a tiny autowiring PHP framework
 Features
 ========
 
--	[x] Autowiring
--	[x] Singletons
--	[x] Services
--	[ ] Hooks
--	[x] Modularization
--	[x] Autoloading
+- [x] Autowiring
+- [x] Singletons
+- [x] Services
+- [ ] Hooks
+- [x] Modularization
+- [x] Autoloading
 
 Installation
 ============
