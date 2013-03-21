@@ -106,12 +106,11 @@ Interface `\Cool\Service` has one method `canServe($mixedCriteria)`.
 
 When it's method `getService($serviceType , $mixedCriteria)` is called,
 the container asks all classes of the given service type, if they 
-could answer to the request. The first service that answers with TRUE 
-is the winner. It is instantiated and returned. 
+could serve the request. The first service that answers with TRUE 
+is the winner. It is instantiated and returned ready to do the job. 
 
-This is a rather simple algorythm to find the winnig service, 
-but it's simplicity by intention. Not to much functionality
-should happen behind the scenes.
+This is a rather simple algorythm to find the winnig service, but it's 
+simplicity by intention. Not to much should happen behind the scenes.
 
 ```php
 // ... Concierge get me a pizza service! 
