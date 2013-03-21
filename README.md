@@ -102,13 +102,15 @@ The interface `\Cool\Service` has one method `canServe($mixedCriteria)`.
 This is a **static** method, a class method. 
 
 The conatainer is called by `getService($serviceType , $mixedCriteria)`.
-It nows asks all classes of the requested service types, if they could
-answer the request, until the first one answers with TRUE.
+It nows asks all classes of the requested service type, if they could
+answer the request, until the first one answers with TRUE. The
+service type is the interface name of the service.
 
 ```php
 	$pizzaService = $conatiner->getService('MyModule\PizzaService', array('dayOfWeek' => 'monday'));
 
-	//  ... asking some services, all closed on monday, until ...
+	//  ... asking some pizza services, 
+	//  all closed on monday, until ...
 
 	class PizzaCourier implements PizzaService {  
 		// ...
