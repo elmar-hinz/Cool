@@ -104,16 +104,14 @@ interface PizzaService extends \Cool\Service { ... }
 
 Interface `\Cool\Service` has one method `canServe($mixedCriteria)`. 
 
-When the method `getService($serviceType , $mixedCriteria)` is called,
-the container asks all classes of the requested service type, if they 
-could answer to the request. 
+When it's method `getService($serviceType , $mixedCriteria)` is called,
+the container asks all classes of the given service type, if they 
+could answer to the request. The first service that answers with TRUE 
+is the winner. It is instantiated and returned. 
 
-The first service that answers with TRUE is the winner. It is 
-instantiated and returned. 
-
-This is a rather simple algorythm to find the winnig service. 
-But it's simplicity by intention. Not to much functionality
-should be veiled. 
+This is a rather simple algorythm to find the winnig service, 
+but it's simplicity by intention. Not to much functionality
+should happen behind the scenes.
 
 ```php
 // ... Concierge get me a pizza service! 
@@ -149,17 +147,17 @@ class PizzaCourier implements PizzaService {
 > **late static bindings** are youre friends:
 > http://www.php.net/manual/en/language.oop5.late-static-bindings.php
 
-**Hint:**
-
-> Instantiation is delegated to `getInstance`. That means that a service 
-> must provide a construtor that satisfies the criteria of `getInstance`.
-
 Services are autoregistered. They must stay in a module directory
 named `Services/` to work, while the interface definition belongs 
 into `Interfaces/`.
 
 	MyModule/Interfaces/PizzaService.php
 	MyModule/Services/PizzaCourier.php
+
+**Hint:**
+
+> Instantiation is delegated to `getInstance`. That means that a service 
+> must provide a construtor that satisfies the criteria of `getInstance`.
 
 Hooks
 =====
