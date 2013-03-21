@@ -14,20 +14,20 @@ class Container implements Singleton {
 		$this->singletons[get_class($this)] = $this;
 	}
 	
-	public function getService($interface, $mixedCriteria = NULL) {
-		$name = $this->finder->getService($interface, $mixedCriteria);
+	public function getService($serviceType, $mixedCriteria = NULL) {
+		$name = $this->finder->getService($serviceType, $mixedCriteria);
 		return $this->getInstance($name);
 	}
 
-	public function getHooks($interface, $mixedCriteria) {
-		$names = $this->finder->getHooks($interface, $mixedCriteria);
+	public function getHooks($hookType, $mixedCriteria) {
+		$names = $this->finder->getHooks($hookType, $mixedCriteria);
 		$hooks = array();
 		foreach($names as $name) $hook[] = $this->getInstance($name);
 		return $hooks;
 	}
 
-	public function getInstance($wantedInterface) {
-		$class =  $this->finder->getClass($wantedInterface);
+	public function getInstance($wandtedClass) {
+		$class =  $this->finder->getClass($wandtedClass);
 		$rc = new \ReflectionClass($class);
 		if(isset($this->singletons[$class])) {
 			$obj = $this->singletons[$class];
