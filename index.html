@@ -122,24 +122,26 @@ methods <code>getInstance</code>, <code>getService</code> or <code>getHook</code
 <div class="highlight"><pre><span class="k">class</span> <span class="nc">PizzaCourier</span> <span class="k">implements</span> <span class="nx">PizzaService</span> <span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
 </pre></div>
 
-<p>This interface defines the type of the service and makes the class 
-a service at all. The interface must extend <code>\Cool\Service</code>.</p>
+<p>This interface defines the type of the service. 
+It must extend <code>\Cool\Service</code>.</p>
 
 <div class="highlight"><pre><span class="k">interface</span> <span class="nx">PizzaService</span> <span class="k">extends</span> <span class="nx">\Cool\Service</span> <span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
 </pre></div>
 
-<p>The interface <code>\Cool\Service</code> has one method <code>canServe($mixedCriteria)</code>. 
-This is a <strong>static</strong> method, a class method. </p>
+<p>Interface <code>\Cool\Service</code> has one method <code>canServe($mixedCriteria)</code>. </p>
 
 <p>The conatainer is called by <code>getService($serviceType , $mixedCriteria)</code>.
 It nows asks all classes of the requested service type, if they could
 answer the request, until the first one answers with TRUE. The
 service type is the interface name of the service.</p>
 
-<div class="highlight"><pre><span class="nv">$pizzaService</span> <span class="o">=</span> <span class="nv">$container</span><span class="o">-&gt;</span><span class="na">getService</span><span class="p">(</span>
+<div class="highlight"><pre><span class="c1">// ... Concierge get me a pizza service! </span>
+<span class="c1">// ... We have a surprising monday party and the fridge is empty.</span>
+
+<span class="nv">$pizzaService</span> <span class="o">=</span> <span class="nv">$container</span><span class="o">-&gt;</span><span class="na">getService</span><span class="p">(</span>
                 <span class="s1">'MyModule\PizzaService'</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">'dayOfWeek'</span> <span class="o">=&gt;</span> <span class="s1">'monday'</span><span class="p">));</span>
 
-<span class="c1">//  ... wiring some pizza services, </span>
+<span class="c1">//  Concierge wiring some pizza services, </span>
 <span class="c1">//  all closed on monday, until suddenly ...</span>
 
 <span class="k">class</span> <span class="nc">PizzaCourier</span> <span class="k">implements</span> <span class="nx">PizzaService</span> <span class="p">{</span>  
@@ -151,12 +153,31 @@ service type is the interface name of the service.</p>
 <span class="p">}</span>
 </pre></div>
 
-<p>The instantiation is done by <code>getInstance</code> again. That means that
-a service must provide a construtor that satisfies the criteria of
-<code>getInstance</code>.</p>
+<p><strong>Hint:</strong></p>
 
-<p>It depends on the service type, what it uses as $mixedCriteria and how
-it decides to answer with TRUE or FALSE based on this criteria.</p>
+<blockquote>
+<p>It depends on the service type, what <code>canServe</code> uses as $mixedCriteria 
+and how it evaluates its answer. If you don't set a stricter type for
+$mixedCriteria in the interface definition,  you should at least 
+document it in that place.</p>
+</blockquote>
+
+<p><strong>Hint:</strong></p>
+
+<blockquote>
+<p>canServe is a <strong>static</strong> method, a <strong>class method</strong>.</p>
+
+<p>To get inheritance work with static methods and variables
+<strong>late static bindings</strong> are youre friends:
+<a href="http://www.php.net/manual/en/language.oop5.late-static-bindings.php">http://www.php.net/manual/en/language.oop5.late-static-bindings.php</a></p>
+</blockquote>
+
+<p><strong>Hint:</strong></p>
+
+<blockquote>
+<p>Instantiation is delegated to <code>getInstance</code>. That means that a service 
+must provide a construtor that satisfies the criteria of <code>getInstance</code>.</p>
+</blockquote>
 
 <p>Services are autoregistered. They must stay in a module directory
 named <code>Services/</code> to work, while the interface definition belongs 
