@@ -195,82 +195,6 @@ Other recommended Directories
 	MyModule/Documentation/
 	MyModule/Tests/
 
-Hello World
-===========
-
-Hello world as a service.
-
-Setting up directories
-----------------------
-
-```sh
-cd Cool/Modules/
-mkdir HelloWorld/
-cd HelloWorld/
-mkdir Executables Configuration Interfaces Classes Services
-```
-
-GreetService interface
------------------------
-Path `Interfaces/HelloService.php`:
-```php
-<php namepace HelloWorld;
-interface GreetService extends \Cool\Service {
-	public greet($name);
-}
-?>
-```
-
-Hello service
---------------
-Path `Services/Hello.php`:
-```php
-<php namepace HelloWorld;
-class HelloService implements GreetService {
-	static public canServce($mixedCriteria) { return TRUE; }
-	public greet($name) { print 'Hello '.$name.'!'; }
-}
-?>
-```
-
-Configuration
--------------
-Path `Configuration/Main.php`:
-```php
-<php namepace HelloWorld;
-class Main {
-	static public main($argv) { 
-		$moduleBase = __DIR__.'/../..';
-		require_once($moduleBase.'/Cool/Classes/AutoLoader.php');
-		$loader = new \Cool\AutoLoader();
-		$loader->addModuleBase($moduleBase);
-		$loader->go();
-		$loader = new \Cool\DedicatedDirectoriesLoader();
-		$loader->addModuleBase($moduleBase);
-		$loader->go();
-		$container = new \Cool\Container();
-		$container->getService('HelloWorld\HelloService', NULL)->greet($argv[1]);
-	}
-}
-?>
-```
-
-Executable
-----------
-Path `Executables/helloWorld.sh`:
-```php
-#! /usr/bin/env php
-<?php
-require_once(__DIR__."/../Configuration/Main.php");
-\HelloWorld\Main::main($argv);
-?>
-```
-make it executable:
-```sh
-chmod +x Executables/helloWorld.sh
-```
-
-
 Coding guidelines
 =================
 
@@ -299,6 +223,82 @@ Goals of the design
 * Flat organization of module directories.
 * Proofed by unit testing 
 * MIT license, to let modules choose their own way 
+
+
+Hello World
+===========
+
+Hello world as a service.
+
+Setting up directories
+----------------------
+
+```sh
+cd Cool/Modules/
+mkdir HelloWorld/
+cd HelloWorld/
+mkdir Executables Configuration Interfaces Classes Services
+```
+
+GreetService interface
+-----------------------
+Path `Interfaces/HelloService.php`:
+```php
+<php namepace HelloWorld;
+interface GreetService extends \Cool\Service {
+	public greet($name);
+}
+?>
+```
+
+HelloGreeter service
+--------------------
+Path `Services/Hello.php`:
+```php
+<php namepace HelloWorld;
+class HelloGreeter implements GreetService {
+	static public canServce($mixedCriteria) { return TRUE; }
+	public greet($name) { print 'Hello '.$name.'!'; }
+}
+?>
+```
+
+Configuration
+-------------
+Path `Configuration/Main.php`:
+```php
+<php namepace HelloWorld;
+class Main {
+	static public main($argv) { 
+		$moduleBase = __DIR__.'/../..';
+		require_once($moduleBase.'/Cool/Classes/AutoLoader.php');
+		$loader = new \Cool\AutoLoader();
+		$loader->addModuleBase($moduleBase);
+		$loader->go();
+		$loader = new \Cool\DedicatedDirectoriesLoader();
+		$loader->addModuleBase($moduleBase);
+		$loader->go();
+		$container = new \Cool\Container();
+		$container->getService('HelloWorld\HelloGreeter', NULL)->greet($argv[1]);
+	}
+}
+?>
+```
+
+Executable
+----------
+Path `Executables/helloWorld.sh`:
+```php
+#! /usr/bin/env php
+<?php
+require_once(__DIR__."/../Configuration/Main.php");
+\HelloWorld\Main::main($argv);
+?>
+```
+make it executable:
+```sh
+chmod +x Executables/helloWorld.sh
+```
 
 TODO
 ====
