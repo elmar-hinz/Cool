@@ -38,9 +38,9 @@ class Beer   { ... }
 class Music  { ... } 
 
 class Party {
-				function __construct(People $people, Beer $beer, Music $music) {
-								...
-				}
+	function __construct(People $people, Beer $beer, Music $music) {
+		...
+	}
 }
 
 $container = new \Cool\Container();
