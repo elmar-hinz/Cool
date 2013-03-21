@@ -124,8 +124,10 @@ class PizzaCourier implements PizzaService {
 }
 ```
 
-It depends on the service type, what it uses as $mixedCriteria and how
-it decides to answer with TRUE or FALSE based on this criteria.
+It depends on the service type, what `canServe` uses as $mixedCriteria 
+and how it evaluates its answer. If you don't set a stricter type for
+$mixedCriteria in the interface definition,  you should at least 
+document it in that place.
 
 **Hint:**
 
@@ -135,9 +137,8 @@ it decides to answer with TRUE or FALSE based on this criteria.
 > **late static bindings** are youre friends:
 > http://www.php.net/manual/en/language.oop5.late-static-bindings.php
 
-The instantiation is done by `getInstance` again. That means that
-a service must provide a construtor that satisfies the criteria of
-`getInstance`.
+Instantiation is delegated to `getInstance`. That means that a service 
+must provide a construtor that satisfies the criteria of `getInstance`.
 
 Services are autoregistered. They must stay in a module directory
 named `Services/` to work, while the interface definition belongs 
