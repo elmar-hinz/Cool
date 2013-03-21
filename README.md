@@ -17,12 +17,12 @@ Cool - a tiny autowiring PHP framework
 Features
 ========
 
-[x] Autowiring
-[x] Singletons
-[x] Services
-[ ] Hooks
-[x] Modularization
-[x] Autoloading
+	[x] Autowiring
+	[x] Singletons
+	[x] Services
+	[ ] Hooks
+	[x] Modularization
+	[x] Autoloading
 
 Autowiring - Dependency injection for dummies
 =============================================
@@ -47,19 +47,22 @@ Autowiring - Dependency injection for dummies
 Autowiring, the details
 -----------------------
 
-Autowiring is triggert by the call to `getInstance($classname)` 
+Autowiring is triggert by a call to `getInstance($classname)` 
 of the container.  It is based on the signature of the constructor. 
+
 For each parameter a classname has to be declared. Else it fails.
 It tries to to create an instance for each parameter 
 by a recursive call to `getInstance`.
 
-A later version of Cool will give the option to select subclasses
-for a paramter interface in the configuration. 
-
-If getInstance() doesn't do what you want, you can still fall back
-to the classical call to `new` or implent your own factory.
+If `getInstance()` doesn't do what you want, you can still fall back
+to the static call to `new` or implement your own factory.
 
 For sure ´getInstance´ supports the singleton management of the container.
+
+A later version of Cool will give the option to select the actual class
+to use for a paramter interface by configuration. That will be the moment
+it becomes real dependency injection, which real strength is flexibility, 
+not lazyness. 
 
 Singletons
 ==========
@@ -72,7 +75,8 @@ Services
 ========
 
 A service is a class, that implements a service interface.
-A service interface must extend `\Cool\Service`.
+This interface defines the type of the service and makes the class 
+a service at all. The interface must extend `\Cool\Service`.
 
 The interface `\Cool\Service` has one method `canServe($mixedCriteria)`. 
 This is a **static** method, a class method. 
@@ -80,7 +84,7 @@ This is a **static** method, a class method.
 When the conatainer is called by `getService($serviceType , $mixedCriteria)'
 it asks the classes of the requested service types if they can
 answer to service request, until the first one answers with TRUE.
-That is instanciated to handle the request. 
+That is instantiated to handle the request. 
 
 The instantiation is done by `getInstance` again. That means that
 a service must provide a construtor that satisfies the criteria of
@@ -88,6 +92,10 @@ a service must provide a construtor that satisfies the criteria of
 
 It depends on the service type, what it uses as $mixedCriteria and how
 it decides to answer with TRUE or FALSE based on this criteria.
+
+Services are autoregistered. They must stay in a module directory
+named `Services/` to work. 
+
 
 Hooks
 =====
@@ -97,7 +105,50 @@ Not implemented yet.
 Modularization
 ==============
 
+A module is created by putting a directory into `Modules`.
 
+	Cool/Modules/MyModule/
+
+The Module hierarchy is flat. If you want to introduce hierarchy,
+you have to do this in Form of the name. 
+
+	Cool/Modules/MyCompanyMySuperModule/
+
+The subdirectories `Interfaces`, `Classes`, `Hooks` and `Services`
+are the places where the autoloader is looking for. If your pathes
+differ from this, you have to provide your own loading mechanism.
+
+	MyModule/Interfaces/
+	MyModule/Classes/
+	MyModule/Hooks/
+	MyModule/Services/
+
+Hooks and Services must stay in their matching directory to 
+be autoregistered.
+
+	MyModule/Hooks/
+	MyModule/Services/
+
+Other recommended Directories
+
+	MyModule/Configuration/
+	MyModule/Executables/
+	MyModule/Documentation/
+
+
+Coding guidelines
+=================
+
+The coding guidelines are recommendations. They don't differ from
+the up-to-date mainstream:
+
+* Use Camelcase as far as possible.
+* Classnames start uppercase, functions and variables lowercase.
+* Constants are all uppercase: TRUE, FALSE 
+* Respect the security requirements of PHP programming
+* Use namespaces.
+* Put all PHP code into classes, even configurations.
+* Write configurations as PHP array for now.
 
 
 Goals of the design
