@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Cool : a tiny autowiring PHP framework" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Cool</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/t3elmar/Cool">View on GitHub</a>
+
+          <h1 id="project_title">Cool</h1>
+          <h2 id="project_tagline">a tiny autowiring PHP framework</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/t3elmar/Cool/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/t3elmar/Cool/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1></h1>
+
+<h1>Cool - a tiny autowiring PHP framework</h1>
+
+<ul>
+<li>Author: Elmar Hinz <a href="mailto:t3elmar@googlemail.com">t3elmar@googlemail.com</a>
+</li>
+<li>Homepage: </li>
+<li>Version: 0.x.x</li>
+<li>Stability: Alpha/Usable</li>
+<li>License: MIT</li>
+<li>Last update: See <a href="https://github.com/t3elmar/Cool/blob/master/ChangeLog">ChangeLog</a>
+</li>
+<li>OS: tested on POSIX i.e. Mac OS X, Unix, Linux, BSD</li>
+<li>Dependencies: 
+
+<ul>
+<li>php &gt; 5.3</li>
+<li>git (recommended for installation)</li>
+</ul>
+</li>
+<li>The dependencies ship under their own licenses and are not part of this program</li>
+</ul><h1>Features</h1>
+
+<pre><code>[x] Autowiring
+[x] Singletons
+[x] Services
+[ ] Hooks
+[x] Modularization
+[x] Autoloading
+</code></pre>
+
+<h1>Installation</h1>
+
+<pre><code>git clone git@github.com:t3elmar/Cool.git
+</code></pre>
+
+<h1>Autowiring - Dependency injection for dummies</h1>
+
+<div class="highlight"><pre>        <span class="k">class</span> <span class="nc">People</span> <span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+        <span class="k">class</span> <span class="nc">Beer</span>   <span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+        <span class="k">class</span> <span class="nc">Music</span>  <span class="p">{</span> <span class="o">...</span> <span class="p">}</span> 
+
+        <span class="k">class</span> <span class="nc">Party</span> <span class="p">{</span>
+                <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nx">People</span> <span class="nv">$people</span><span class="p">,</span> <span class="nx">Beer</span> <span class="nv">$beer</span><span class="p">,</span> <span class="nx">Music</span> <span class="nv">$music</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="o">...</span>
+                <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="nv">$container</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">\Cool\Container</span><span class="p">();</span>
+        <span class="nv">$party</span> <span class="o">=</span> <span class="nv">$container</span><span class="o">-&gt;</span><span class="na">getInstance</span><span class="p">(</span><span class="s1">'Party'</span><span class="p">);</span>
+
+        <span class="c1">// And the party is up and running ...</span>
+</pre></div>
+
+<h2>Autowiring, the details</h2>
+
+<p>Autowiring is triggert by a call to <code>getInstance($classname)</code> 
+of the container.  It is based on the signature of the constructor. </p>
+
+<p>For each parameter a classname has to be declared. Else it fails.
+It tries to to create an instance for each parameter 
+by a recursive call to <code>getInstance</code>.</p>
+
+<p>If <code>getInstance()</code> doesn't do what you want, you can still fall back
+to the static call to <code>new</code> or implement your own factory.</p>
+
+<p>For sure ´getInstance´ supports the singleton management of the container.</p>
+
+<p>A later version of Cool will give the option to select the actual class
+to use for a paramter interface by configuration. That will be the moment
+it becomes real dependency injection, which real strength is flexibility, 
+not lazyness. </p>
+
+<h1>Singletons</h1>
+
+<p>By implementing the interface <code>\Cool\Singleton</code> an object is managed as 
+Singleton by the container, as long as it called by the conatainer
+methods <code>getInstance</code>, <code>getService</code> or <code>getHook</code>.</p>
+
+<h1>Services</h1>
+
+<p>A service is a class, that implements a service interface.
+This interface defines the type of the service and makes the class 
+a service at all. The interface must extend <code>\Cool\Service</code>.</p>
+
+<p>The interface <code>\Cool\Service</code> has one method <code>canServe($mixedCriteria)</code>. 
+This is a <strong>static</strong> method, a class method. </p>
+
+<p>When the conatainer is called by `getService($serviceType , $mixedCriteria)'
+it asks the classes of the requested service types if they can
+answer to service request, until the first one answers with TRUE.
+That is instantiated to handle the request. </p>
+
+<p>The instantiation is done by <code>getInstance</code> again. That means that
+a service must provide a construtor that satisfies the criteria of
+<code>getInstance</code>.</p>
+
+<p>It depends on the service type, what it uses as $mixedCriteria and how
+it decides to answer with TRUE or FALSE based on this criteria.</p>
+
+<p>Services are autoregistered. They must stay in a module directory
+named <code>Services/</code> to work. </p>
+
+<h1>Hooks</h1>
+
+<p>Not implemented yet.</p>
+
+<h1>Modularization</h1>
+
+<p>A module is created by putting a directory into <code>Modules</code>.</p>
+
+<pre><code>Cool/Modules/MyModule/
+</code></pre>
+
+<p>The Module hierarchy is flat. If you want to introduce hierarchy,
+you have to do this in Form of the name. </p>
+
+<pre><code>Cool/Modules/MyCompanyMySuperModule/
+</code></pre>
+
+<p>The subdirectories <code>Interfaces</code>, <code>Classes</code>, <code>Hooks</code> and <code>Services</code>
+are the places where the autoloader is looking for. If your pathes
+differ from this, you have to provide your own loading mechanism.</p>
+
+<pre><code>MyModule/Interfaces/
+MyModule/Classes/
+MyModule/Hooks/
+MyModule/Services/
+</code></pre>
+
+<p>Hooks and Services must stay in their matching directory to 
+be autoregistered.</p>
+
+<pre><code>MyModule/Hooks/
+MyModule/Services/
+</code></pre>
+
+<p>Other recommended Directories</p>
+
+<pre><code>MyModule/Configuration/
+MyModule/Executables/
+MyModule/Documentation/
+MyModule/Tests/
+</code></pre>
+
+<h1>Coding guidelines</h1>
+
+<p>The coding guidelines are recommendations. They don't differ from
+the up-to-date mainstream:</p>
+
+<ul>
+<li>Use CamelCase as far as possible.</li>
+<li>Classnames start uppercase, functions and variables lowercase.</li>
+<li>Constants are all uppercase: TRUE, FALSE </li>
+<li>Respect the security requirements of PHP programming</li>
+<li>Wrap all PHP code into classes, even configurations.</li>
+<li>Use namespaces.</li>
+<li>Write configurations as PHP array for now.</li>
+<li>Put a license in your module.</li>
+<li>When you call code from other moduels, adhere their licences.
+They may not be al liberal as the Cool Framework itself.</li>
+</ul><h1>Goals of the design</h1>
+
+<ul>
+<li>Small footprint.</li>
+<li>Feature minimized. Features can be added by modules.</li>
+<li>Easy to get started.</li>
+<li>Human readable namings.</li>
+<li>Flat organization of module directories.</li>
+<li>Proofed by unit testing </li>
+<li>MIT license, to let modules choose their own way </li>
+</ul><h1>TODO</h1>
+
+<ul>
+<li>Improve documentation</li>
+<li>Improve documentation of the code</li>
+<li>More unit testing</li>
+</ul>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Cool maintained by <a href="https://github.com/t3elmar">t3elmar</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
