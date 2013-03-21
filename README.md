@@ -33,20 +33,20 @@ Autowiring - Dependency injection for dummies
 =============================================
 
 ```php
-        class People { ... }
-        class Beer   { ... }
-        class Music  { ... } 
+class People { ... }
+class Beer   { ... }
+class Music  { ... } 
 
-        class Party {
-                function __construct(People $people, Beer $beer, Music $music) {
-                        ...
-                }
-        }
+class Party {
+				function __construct(People $people, Beer $beer, Music $music) {
+								...
+				}
+}
 
-        $container = new \Cool\Container();
-        $party = $container->getInstance('Party');
+$container = new \Cool\Container();
+$party = $container->getInstance('Party');
 
-        // And the party is up and running ...
+// And the party is up and running ...
 ```
 
 Autowiring, the details
@@ -110,7 +110,7 @@ service type is the interface name of the service.
 $pizzaService = $container->getService(
 				'MyModule\PizzaService', array('dayOfWeek' => 'monday'));
 
-//  ... asking some pizza services, 
+//  ... wiring some pizza services, 
 //  all closed on monday, until suddenly ...
 
 class PizzaCourier implements PizzaService {  
