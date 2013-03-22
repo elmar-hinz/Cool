@@ -241,12 +241,12 @@ cd HelloWorld/
 mkdir Executables Configuration Interfaces Classes Services
 ```
 
-GreetService interface
------------------------
-Path `Interfaces/HelloService.php`:
+GreeterService interface
+------------------------
+Path `Interfaces/GreeterService.php`:
 ```php
 <php namepace HelloWorld;
-interface GreetService extends \Cool\Service {
+interface GreeterService extends \Cool\Service {
 	// expects morning | evening| other string
 	public static canServce($timeOfDay);
 	public greet($name);
@@ -259,7 +259,7 @@ Greeter services
 Path `Services/MorningGreeter.php`:
 ```php
 <php namepace HelloWorld;
-class MorningGreeter implements GreetService {
+class MorningGreeter implements GreeterService {
 	static public canServce($timeOfDay) { return $timeOfDay == 'morning'; }
 	public greet($name) { print 'Good morning, '.$name.'!'; }
 }
@@ -269,7 +269,7 @@ class MorningGreeter implements GreetService {
 Path `Services/EveningGreeter.php`:
 ```php
 <php namepace HelloWorld;
-class EveningGreeter implements GreetService {
+class EveningGreeter implements GreeterService {
 	static public canServce($timeOfDay) { return $timeOfDay == 'evening'; }
 	public greet($name) { print 'Good evening, '.$name.'!'; }
 }
@@ -278,7 +278,7 @@ class EveningGreeter implements GreetService {
 Path `Services/DefaultGreeter.php`:
 ```php
 <php namepace HelloWorld;
-class DefaultGreeter implements GreetService {
+class DefaultGreeter implements GreeterService {
 	static public canService($timeOfDay) { 
 		return $timeOfDay != 'evening' && $timeOfDay != 'morning'; }
 	public greet($name) { print 'Hello '.$name.'!'; }
@@ -302,7 +302,7 @@ class Program {
 
 	public function go($name) {
 		$timeOfDay = $this->getTimeOfDay();
-		$container->getService('HelloWorld\GreetService', $timeOfDay)->greet($name);
+		$container->getService('HelloWorld\GreeterService', $timeOfDay)->greet($name);
 	}
 
 	// returns a string: morning | evening | other
