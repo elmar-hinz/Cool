@@ -290,11 +290,11 @@ Path `Classes/HelloWorld.php`:
 
 ```php
 <php namepace HelloWorld;
-class HelloWorld {
+class Program {
 	private $container;
 
 	# the container injects itself as a singleton
-	public function __construct(\Cool\Conatiner $container) {
+	public function __construct(\Cool\Container $container) {
 		$this->container = $container;
 	}
 
@@ -326,8 +326,9 @@ class Main {
 		$loader->addModuleBase($moduleBase);
 		$loader->go();
 		$container = new \Cool\Container();
+		$program = $container->getInstance('HelloWorld\Program');
 		// the user provides his name as argument
-		$container->go($argv[1]);
+		$program->go($argv[1]);
 	}
 }
 ?>
