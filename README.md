@@ -109,7 +109,7 @@ is the winner. It is instantiated and returned ready to do the job.
 
 ### Out-look ###
 > This is the most simple algorythm to find the winnig service, but it's 
-> simplicity by intention. Inject your own finders in future versionsns.
+> simplicity by intention. Inject your own finders in future versions.
 
 ```php
 // ... Concierge get me a pizza service! 
@@ -245,7 +245,7 @@ GreeterService interface
 ------------------------
 Path `Interfaces/GreeterService.php`:
 ```php
-<php namepace HelloWorld;
+<?php namepace HelloWorld;
 interface GreeterService extends \Cool\Service {
 	// expects morning | evening| other string
 	public static CanServe($timeOfDay);
@@ -258,7 +258,7 @@ Greeter services
 ----------------
 Path `Services/MorningGreeter.php`:
 ```php
-<php namepace HelloWorld;
+<?php namepace HelloWorld;
 class MorningGreeter implements GreeterService {
 	static public CanServe($timeOfDay) { return $timeOfDay == 'morning'; }
 	public greet($name) { print 'Good morning, '.$name.'!'; }
@@ -268,7 +268,7 @@ class MorningGreeter implements GreeterService {
 
 Path `Services/EveningGreeter.php`:
 ```php
-<php namepace HelloWorld;
+<?php namepace HelloWorld;
 class EveningGreeter implements GreeterService {
 	static public CanServe($timeOfDay) { return $timeOfDay == 'evening'; }
 	public greet($name) { print 'Good evening, '.$name.'!'; }
@@ -277,7 +277,7 @@ class EveningGreeter implements GreeterService {
 ```
 Path `Services/DefaultGreeter.php`:
 ```php
-<php namepace HelloWorld;
+<?php namepace HelloWorld;
 class DefaultGreeter implements GreeterService {
 	static public canServe($timeOfDay) { 
 		return $timeOfDay != 'evening' && $timeOfDay != 'morning'; }
@@ -291,7 +291,7 @@ The program
 Path `Classes/HelloWorld.php`:
 
 ```php
-<php namepace HelloWorld;
+<?php namepace HelloWorld;
 class Program {
 	private $container;
 
@@ -316,7 +316,7 @@ Configuration
 -------------
 Path `Configuration/Main.php`:
 ```php
-<php namepace HelloWorld;
+<?php namepace HelloWorld;
 class Main {
 	static public main($argv) { 
 		$moduleBase = __DIR__.'/../..';
