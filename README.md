@@ -264,10 +264,10 @@ class MorningGreeter implements GreetService {
 ?>
 ```
 
-Path `Services/MorningGreeter.php`:
+Path `Services/EveningGreeter.php`:
 ```php
 <php namepace HelloWorld;
-class MorningGreeter implements GreetService {
+class EveningGreeter implements GreetService {
 	static public canServce($timeOfDay) { return $timeOfDay == 'evening'; }
 	public greet($name) { print 'Good evening, '.$name.'!'; }
 }
