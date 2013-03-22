@@ -247,7 +247,6 @@ Path `Interfaces/HelloService.php`:
 ```php
 <php namepace HelloWorld;
 interface GreetService extends \Cool\Service {
-
 	// expects morning | evening| other string
 	public static canServce($timeOfDay);
 	public greet($name);
@@ -296,7 +295,7 @@ Path `Classes/HelloWorld.php`:
 class Program {
 	private $container;
 
-	# the container injects itself as a singleton
+	// The container (a singleton) will inject itself. 
 	public function __construct(\Cool\Container $container) {
 		$this->container = $container;
 	}
