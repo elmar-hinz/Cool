@@ -107,8 +107,9 @@ the container asks all classes of the given service type, if they
 could serve the request. The first service that answers with TRUE 
 is the winner. It is instantiated and returned ready to do the job. 
 
-This is a rather simple algorythm to find the winnig service, but it's 
-simplicity by intention. Not to much should happen behind the scenes.
+### Out-look ###
+> This is the most simple algorythm to find the winnig service, but it's 
+> simplicity by intention. Inject your own finders in future versionsns.
 
 ```php
 // ... Concierge get me a pizza service! 
@@ -251,14 +252,60 @@ interface GreetService extends \Cool\Service {
 ?>
 ```
 
-HelloGreeter service
---------------------
-Path `Services/Hello.php`:
+Greeter services
+----------------
+Path `Services/MorningGreeter.php`:
 ```php
 <php namepace HelloWorld;
-class HelloGreeter implements GreetService {
-	static public canServce($mixedCriteria) { return TRUE; }
+class MorningGreeter implements GreetService {
+	static public canServce($timeOfDay) { return $timeOfDay == 'morning'; }
+	public greet($name) { print 'Good morning, '.$name.'!'; }
+}
+?>
+```
+
+Path `Services/MorningGreeter.php`:
+```php
+<php namepace HelloWorld;
+class MorningGreeter implements GreetService {
+	static public canServce($timeOfDay) { return $timeOfDay == 'evening'; }
+	public greet($name) { print 'Good evening, '.$name.'!'; }
+}
+?>
+```
+Path `Services/DefaultGreeter.php`:
+```php
+<php namepace HelloWorld;
+class DefaultGreeter implements GreetService {
+	static public canService($timeOfDay) { 
+		return $timeOfDay != 'evening' && $timeOfDay != 'morning'; }
 	public greet($name) { print 'Hello '.$name.'!'; }
+}
+?>
+```
+
+The program
+-----------
+Path `Classes/HelloWorld.php`:
+
+```php
+<php namepace HelloWorld;
+class HelloWorld {
+	private $container;
+
+	# the container injects itself as a singleton
+	public function __construct(\Cool\Conatiner $container) {
+		$this->container = $container;
+	}
+
+	public function go($name) {
+		$timeOfDay = $this->getTimeOfDay();
+		$container->getService('HelloWorld\GreetService', $timeOfDay)->greet($name);
+	}
+
+	// returns a string: morning | evening | other
+	public function getTimeOfDay() { ... }
+
 }
 ?>
 ```
@@ -279,7 +326,8 @@ class Main {
 		$loader->addModuleBase($moduleBase);
 		$loader->go();
 		$container = new \Cool\Container();
-		$container->getService('HelloWorld\HelloGreeter', NULL)->greet($argv[1]);
+		// the user provides his name as argument
+		$container->go($argv[1]);
 	}
 }
 ?>
@@ -303,6 +351,8 @@ chmod +x Executables/sayHello.sh
 TODO
 ====
 
+* Hooks
+* Add customized finders
 * Improve documentation
 * Improve documentation of the code
 * More unit testing
