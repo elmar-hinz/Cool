@@ -248,7 +248,7 @@ Path `Interfaces/GreeterService.php`:
 <php namepace HelloWorld;
 interface GreeterService extends \Cool\Service {
 	// expects morning | evening| other string
-	public static canServce($timeOfDay);
+	public static CanServe($timeOfDay);
 	public greet($name);
 }
 ?>
@@ -260,7 +260,7 @@ Path `Services/MorningGreeter.php`:
 ```php
 <php namepace HelloWorld;
 class MorningGreeter implements GreeterService {
-	static public canServce($timeOfDay) { return $timeOfDay == 'morning'; }
+	static public CanServe($timeOfDay) { return $timeOfDay == 'morning'; }
 	public greet($name) { print 'Good morning, '.$name.'!'; }
 }
 ?>
@@ -270,7 +270,7 @@ Path `Services/EveningGreeter.php`:
 ```php
 <php namepace HelloWorld;
 class EveningGreeter implements GreeterService {
-	static public canServce($timeOfDay) { return $timeOfDay == 'evening'; }
+	static public CanServe($timeOfDay) { return $timeOfDay == 'evening'; }
 	public greet($name) { print 'Good evening, '.$name.'!'; }
 }
 ?>
@@ -279,7 +279,7 @@ Path `Services/DefaultGreeter.php`:
 ```php
 <php namepace HelloWorld;
 class DefaultGreeter implements GreeterService {
-	static public canService($timeOfDay) { 
+	static public canServe($timeOfDay) { 
 		return $timeOfDay != 'evening' && $timeOfDay != 'morning'; }
 	public greet($name) { print 'Hello '.$name.'!'; }
 }
