@@ -139,8 +139,12 @@ the container asks all classes of the given service type, if they
 could serve the request. The first service that answers with TRUE 
 is the winner. It is instantiated and returned ready to do the job. </p>
 
-<p>This is a rather simple algorythm to find the winnig service, but it's 
-simplicity by intention. Not to much should happen behind the scenes.</p>
+<h3>Out-look</h3>
+
+<blockquote>
+<p>This is the most simple algorythm to find the winnig service, but it's 
+simplicity by intention. Inject your own finders in future versionsns.</p>
+</blockquote>
 
 <div class="highlight"><pre><span class="c1">// ... Concierge get me a pizza service! </span>
 <span class="c1">// ... We have a surprising monday party and the fridge is empty.</span>
@@ -262,9 +266,134 @@ They may not be as liberal as the Cool framework itself.</li>
 <li>Flat organization of module directories.</li>
 <li>Proofed by unit testing </li>
 <li>MIT license, to let modules choose their own way </li>
-</ul><h1>TODO</h1>
+</ul><h1>Hello World</h1>
+
+<p>Hello world as a service.</p>
+
+<h2>Setting up directories</h2>
+
+<div class="highlight"><pre><span class="nb">cd </span>Cool/Modules/
+mkdir HelloWorld/
+<span class="nb">cd </span>HelloWorld/
+mkdir Executables Configuration Interfaces Classes Services
+</pre></div>
+
+<h2>GreeterService interface</h2>
+
+<p>Path <code>Interfaces/GreeterService.php</code>:</p>
+
+<div class="highlight"><pre><span class="o">&lt;</span><span class="nx">php</span> <span class="nx">namepace</span> <span class="nx">HelloWorld</span><span class="p">;</span>
+<span class="k">interface</span> <span class="nx">GreeterService</span> <span class="k">extends</span> <span class="nx">\Cool\Service</span> <span class="p">{</span>
+    <span class="c1">// expects morning | evening| other string</span>
+    <span class="k">public</span> <span class="k">static</span> <span class="nx">CanServe</span><span class="p">(</span><span class="nv">$timeOfDay</span><span class="p">);</span>
+    <span class="k">public</span> <span class="nx">greet</span><span class="p">(</span><span class="nv">$name</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+
+<h2>Greeter services</h2>
+
+<p>Path <code>Services/MorningGreeter.php</code>:</p>
+
+<div class="highlight"><pre><span class="o">&lt;</span><span class="nx">php</span> <span class="nx">namepace</span> <span class="nx">HelloWorld</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">MorningGreeter</span> <span class="k">implements</span> <span class="nx">GreeterService</span> <span class="p">{</span>
+    <span class="k">static</span> <span class="k">public</span> <span class="nx">CanServe</span><span class="p">(</span><span class="nv">$timeOfDay</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nv">$timeOfDay</span> <span class="o">==</span> <span class="s1">'morning'</span><span class="p">;</span> <span class="p">}</span>
+    <span class="k">public</span> <span class="nx">greet</span><span class="p">(</span><span class="nv">$name</span><span class="p">)</span> <span class="p">{</span> <span class="k">print</span> <span class="s1">'Good morning, '</span><span class="o">.</span><span class="nv">$name</span><span class="o">.</span><span class="s1">'!'</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">}</span>
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+
+<p>Path <code>Services/EveningGreeter.php</code>:</p>
+
+<div class="highlight"><pre><span class="o">&lt;</span><span class="nx">php</span> <span class="nx">namepace</span> <span class="nx">HelloWorld</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">EveningGreeter</span> <span class="k">implements</span> <span class="nx">GreeterService</span> <span class="p">{</span>
+    <span class="k">static</span> <span class="k">public</span> <span class="nx">CanServe</span><span class="p">(</span><span class="nv">$timeOfDay</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nv">$timeOfDay</span> <span class="o">==</span> <span class="s1">'evening'</span><span class="p">;</span> <span class="p">}</span>
+    <span class="k">public</span> <span class="nx">greet</span><span class="p">(</span><span class="nv">$name</span><span class="p">)</span> <span class="p">{</span> <span class="k">print</span> <span class="s1">'Good evening, '</span><span class="o">.</span><span class="nv">$name</span><span class="o">.</span><span class="s1">'!'</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">}</span>
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+
+<p>Path <code>Services/DefaultGreeter.php</code>:</p>
+
+<div class="highlight"><pre><span class="o">&lt;</span><span class="nx">php</span> <span class="nx">namepace</span> <span class="nx">HelloWorld</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">DefaultGreeter</span> <span class="k">implements</span> <span class="nx">GreeterService</span> <span class="p">{</span>
+    <span class="k">static</span> <span class="k">public</span> <span class="nx">canServe</span><span class="p">(</span><span class="nv">$timeOfDay</span><span class="p">)</span> <span class="p">{</span> 
+        <span class="k">return</span> <span class="nv">$timeOfDay</span> <span class="o">!=</span> <span class="s1">'evening'</span> <span class="o">&amp;&amp;</span> <span class="nv">$timeOfDay</span> <span class="o">!=</span> <span class="s1">'morning'</span><span class="p">;</span> <span class="p">}</span>
+    <span class="k">public</span> <span class="nx">greet</span><span class="p">(</span><span class="nv">$name</span><span class="p">)</span> <span class="p">{</span> <span class="k">print</span> <span class="s1">'Hello '</span><span class="o">.</span><span class="nv">$name</span><span class="o">.</span><span class="s1">'!'</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">}</span>
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+
+<h2>The program</h2>
+
+<p>Path <code>Classes/HelloWorld.php</code>:</p>
+
+<div class="highlight"><pre><span class="o">&lt;</span><span class="nx">php</span> <span class="nx">namepace</span> <span class="nx">HelloWorld</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">Program</span> <span class="p">{</span>
+    <span class="k">private</span> <span class="nv">$container</span><span class="p">;</span>
+
+    <span class="c1">// The container (a singleton) will inject itself. </span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nx">\Cool\Container</span> <span class="nv">$container</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">container</span> <span class="o">=</span> <span class="nv">$container</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">go</span><span class="p">(</span><span class="nv">$name</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$timeOfDay</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">getTimeOfDay</span><span class="p">();</span>
+        <span class="nv">$container</span><span class="o">-&gt;</span><span class="na">getService</span><span class="p">(</span><span class="s1">'HelloWorld\GreeterService'</span><span class="p">,</span> <span class="nv">$timeOfDay</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">greet</span><span class="p">(</span><span class="nv">$name</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="c1">// returns a string: morning | evening | other</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">getTimeOfDay</span><span class="p">()</span> <span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+
+<span class="p">}</span>
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+
+<h2>Configuration</h2>
+
+<p>Path <code>Configuration/Main.php</code>:</p>
+
+<div class="highlight"><pre><span class="o">&lt;</span><span class="nx">php</span> <span class="nx">namepace</span> <span class="nx">HelloWorld</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">Main</span> <span class="p">{</span>
+    <span class="k">static</span> <span class="k">public</span> <span class="nx">main</span><span class="p">(</span><span class="nv">$argv</span><span class="p">)</span> <span class="p">{</span> 
+        <span class="nv">$moduleBase</span> <span class="o">=</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">'/../..'</span><span class="p">;</span>
+        <span class="k">require_once</span><span class="p">(</span><span class="nv">$moduleBase</span><span class="o">.</span><span class="s1">'/Cool/Classes/AutoLoader.php'</span><span class="p">);</span>
+        <span class="nv">$loader</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">\Cool\AutoLoader</span><span class="p">();</span>
+        <span class="nv">$loader</span><span class="o">-&gt;</span><span class="na">addModuleBase</span><span class="p">(</span><span class="nv">$moduleBase</span><span class="p">);</span>
+        <span class="nv">$loader</span><span class="o">-&gt;</span><span class="na">go</span><span class="p">();</span>
+        <span class="nv">$loader</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">\Cool\DedicatedDirectoriesLoader</span><span class="p">();</span>
+        <span class="nv">$loader</span><span class="o">-&gt;</span><span class="na">addModuleBase</span><span class="p">(</span><span class="nv">$moduleBase</span><span class="p">);</span>
+        <span class="nv">$loader</span><span class="o">-&gt;</span><span class="na">go</span><span class="p">();</span>
+        <span class="nv">$container</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">\Cool\Container</span><span class="p">();</span>
+        <span class="nv">$program</span> <span class="o">=</span> <span class="nv">$container</span><span class="o">-&gt;</span><span class="na">getInstance</span><span class="p">(</span><span class="s1">'HelloWorld\Program'</span><span class="p">);</span>
+        <span class="c1">// the user provides his name as argument</span>
+        <span class="nv">$program</span><span class="o">-&gt;</span><span class="na">go</span><span class="p">(</span><span class="nv">$argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+
+<h2>Executable</h2>
+
+<p>Path <code>Executables/sayHello.sh</code>:</p>
+
+<div class="highlight"><pre><span class="c1">#! /usr/bin/env php</span>
+<span class="o">&lt;?</span><span class="nx">php</span>
+<span class="k">require_once</span><span class="p">(</span><span class="nx">__DIR__</span><span class="o">.</span><span class="s2">"/../Configuration/Main.php"</span><span class="p">);</span>
+<span class="nx">\HelloWorld\Main</span><span class="o">::</span><span class="na">main</span><span class="p">(</span><span class="nv">$argv</span><span class="p">);</span>
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+
+<p>make it executable:</p>
+
+<div class="highlight"><pre>chmod +x Executables/sayHello.sh
+</pre></div>
+
+<h1>TODO</h1>
 
 <ul>
+<li>Hooks</li>
+<li>Add customized finders</li>
 <li>Improve documentation</li>
 <li>Improve documentation of the code</li>
 <li>More unit testing</li>
