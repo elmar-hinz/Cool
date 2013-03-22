@@ -247,6 +247,9 @@ Path `Interfaces/HelloService.php`:
 ```php
 <php namepace HelloWorld;
 interface GreetService extends \Cool\Service {
+
+	// expects morning | evening| other string
+	public static canServce($timeOfDay);
 	public greet($name);
 }
 ?>
