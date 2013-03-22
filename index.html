@@ -143,7 +143,7 @@ is the winner. It is instantiated and returned ready to do the job. </p>
 
 <blockquote>
 <p>This is the most simple algorythm to find the winnig service, but it's 
-simplicity by intention. Inject your own finders in future versionsns.</p>
+simplicity by intention. Inject your own finders in future versions.</p>
 </blockquote>
 
 <div class="highlight"><pre><span class="c1">// ... Concierge get me a pizza service! </span>
@@ -282,7 +282,7 @@ mkdir Executables Configuration Interfaces Classes Services
 
 <p>Path <code>Interfaces/GreeterService.php</code>:</p>
 
-<div class="highlight"><pre><span class="o">&lt;</span><span class="nx">php</span> <span class="nx">namepace</span> <span class="nx">HelloWorld</span><span class="p">;</span>
+<div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span> <span class="nx">namepace</span> <span class="nx">HelloWorld</span><span class="p">;</span>
 <span class="k">interface</span> <span class="nx">GreeterService</span> <span class="k">extends</span> <span class="nx">\Cool\Service</span> <span class="p">{</span>
     <span class="c1">// expects morning | evening| other string</span>
     <span class="k">public</span> <span class="k">static</span> <span class="nx">CanServe</span><span class="p">(</span><span class="nv">$timeOfDay</span><span class="p">);</span>
@@ -295,7 +295,7 @@ mkdir Executables Configuration Interfaces Classes Services
 
 <p>Path <code>Services/MorningGreeter.php</code>:</p>
 
-<div class="highlight"><pre><span class="o">&lt;</span><span class="nx">php</span> <span class="nx">namepace</span> <span class="nx">HelloWorld</span><span class="p">;</span>
+<div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span> <span class="nx">namepace</span> <span class="nx">HelloWorld</span><span class="p">;</span>
 <span class="k">class</span> <span class="nc">MorningGreeter</span> <span class="k">implements</span> <span class="nx">GreeterService</span> <span class="p">{</span>
     <span class="k">static</span> <span class="k">public</span> <span class="nx">CanServe</span><span class="p">(</span><span class="nv">$timeOfDay</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nv">$timeOfDay</span> <span class="o">==</span> <span class="s1">'morning'</span><span class="p">;</span> <span class="p">}</span>
     <span class="k">public</span> <span class="nx">greet</span><span class="p">(</span><span class="nv">$name</span><span class="p">)</span> <span class="p">{</span> <span class="k">print</span> <span class="s1">'Good morning, '</span><span class="o">.</span><span class="nv">$name</span><span class="o">.</span><span class="s1">'!'</span><span class="p">;</span> <span class="p">}</span>
@@ -305,7 +305,7 @@ mkdir Executables Configuration Interfaces Classes Services
 
 <p>Path <code>Services/EveningGreeter.php</code>:</p>
 
-<div class="highlight"><pre><span class="o">&lt;</span><span class="nx">php</span> <span class="nx">namepace</span> <span class="nx">HelloWorld</span><span class="p">;</span>
+<div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span> <span class="nx">namepace</span> <span class="nx">HelloWorld</span><span class="p">;</span>
 <span class="k">class</span> <span class="nc">EveningGreeter</span> <span class="k">implements</span> <span class="nx">GreeterService</span> <span class="p">{</span>
     <span class="k">static</span> <span class="k">public</span> <span class="nx">CanServe</span><span class="p">(</span><span class="nv">$timeOfDay</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nv">$timeOfDay</span> <span class="o">==</span> <span class="s1">'evening'</span><span class="p">;</span> <span class="p">}</span>
     <span class="k">public</span> <span class="nx">greet</span><span class="p">(</span><span class="nv">$name</span><span class="p">)</span> <span class="p">{</span> <span class="k">print</span> <span class="s1">'Good evening, '</span><span class="o">.</span><span class="nv">$name</span><span class="o">.</span><span class="s1">'!'</span><span class="p">;</span> <span class="p">}</span>
@@ -315,7 +315,7 @@ mkdir Executables Configuration Interfaces Classes Services
 
 <p>Path <code>Services/DefaultGreeter.php</code>:</p>
 
-<div class="highlight"><pre><span class="o">&lt;</span><span class="nx">php</span> <span class="nx">namepace</span> <span class="nx">HelloWorld</span><span class="p">;</span>
+<div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span> <span class="nx">namepace</span> <span class="nx">HelloWorld</span><span class="p">;</span>
 <span class="k">class</span> <span class="nc">DefaultGreeter</span> <span class="k">implements</span> <span class="nx">GreeterService</span> <span class="p">{</span>
     <span class="k">static</span> <span class="k">public</span> <span class="nx">canServe</span><span class="p">(</span><span class="nv">$timeOfDay</span><span class="p">)</span> <span class="p">{</span> 
         <span class="k">return</span> <span class="nv">$timeOfDay</span> <span class="o">!=</span> <span class="s1">'evening'</span> <span class="o">&amp;&amp;</span> <span class="nv">$timeOfDay</span> <span class="o">!=</span> <span class="s1">'morning'</span><span class="p">;</span> <span class="p">}</span>
@@ -328,7 +328,7 @@ mkdir Executables Configuration Interfaces Classes Services
 
 <p>Path <code>Classes/HelloWorld.php</code>:</p>
 
-<div class="highlight"><pre><span class="o">&lt;</span><span class="nx">php</span> <span class="nx">namepace</span> <span class="nx">HelloWorld</span><span class="p">;</span>
+<div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span> <span class="nx">namepace</span> <span class="nx">HelloWorld</span><span class="p">;</span>
 <span class="k">class</span> <span class="nc">Program</span> <span class="p">{</span>
     <span class="k">private</span> <span class="nv">$container</span><span class="p">;</span>
 
@@ -353,7 +353,7 @@ mkdir Executables Configuration Interfaces Classes Services
 
 <p>Path <code>Configuration/Main.php</code>:</p>
 
-<div class="highlight"><pre><span class="o">&lt;</span><span class="nx">php</span> <span class="nx">namepace</span> <span class="nx">HelloWorld</span><span class="p">;</span>
+<div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span> <span class="nx">namepace</span> <span class="nx">HelloWorld</span><span class="p">;</span>
 <span class="k">class</span> <span class="nc">Main</span> <span class="p">{</span>
     <span class="k">static</span> <span class="k">public</span> <span class="nx">main</span><span class="p">(</span><span class="nv">$argv</span><span class="p">)</span> <span class="p">{</span> 
         <span class="nv">$moduleBase</span> <span class="o">=</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">'/../..'</span><span class="p">;</span>
