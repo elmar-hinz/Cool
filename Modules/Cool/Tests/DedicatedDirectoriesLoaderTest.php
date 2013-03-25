@@ -6,18 +6,18 @@ class DedicatedDirectoriesLoaderTest extends \PHPUnit_Framework_TestCase {
 
 	private $moduleBase = '/tmp/Modules';
 	private $service = '/tmp/Modules/TestModule/Services/Subdirectorey/TestService.php';
-	private $hook  = '/tmp/Modules/TestModule/Hooks/Subdirectorey/TestHook.php';
+	private $receiver  = '/tmp/Modules/TestModule/Receivers/Subdirectorey/TestReceiver.php';
 	private $class  = '/tmp/Modules/TestModule/Classes/Subdirectorey/TestClass.php';
 		
 	function setUp() {
 		exec('mkdir -p '.dirname($this->service));
-		exec('mkdir -p '.dirname($this->hook));
+		exec('mkdir -p '.dirname($this->receiver));
 		exec('mkdir -p '.dirname($this->class));
 		file_put_contents($this->service, '<?php $GLOBALS["service"] = TRUE; ?>');
-		file_put_contents($this->hook, '<?php $GLOBALS["hook"] = TRUE; ?>');
+		file_put_contents($this->receiver, '<?php $GLOBALS["receiver"] = TRUE; ?>');
 		file_put_contents($this->class, '<?php $GLOBALS["class"] = TRUE; ?>');
 		assert(file_exists($this->service));
-		assert(file_exists($this->hook));
+		assert(file_exists($this->receiver));
 		assert(file_exists($this->class));
 		$this->sut = new DedicatedDirectoriesLoader();
 	}
@@ -43,8 +43,8 @@ class DedicatedDirectoriesLoaderTest extends \PHPUnit_Framework_TestCase {
 		$this->sut->go();
 		$this->assertArrayHasKey('service', $GLOBALS);
 		$this->assertTrue($GLOBALS['service']);
-		$this->assertArrayHasKey('hook', $GLOBALS);
-		$this->assertTrue($GLOBALS['hook']);
+		$this->assertArrayHasKey('receiver', $GLOBALS);
+		$this->assertTrue($GLOBALS['receiver']);
 	}
 
 	/**

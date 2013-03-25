@@ -8,7 +8,8 @@ class AutoLoader extends Loader {
 		spl_autoload_register(array($this, 'loadClasses'));
 		spl_autoload_register(array($this, 'loadInterfaces'));
 		spl_autoload_register(array($this, 'loadServices'));
-		spl_autoload_register(array($this, 'loadHooks'));
+		spl_autoload_register(array($this, 'loadSignals'));
+		spl_autoload_register(array($this, 'loadReceivers'));
 	}
 
 	protected function loadClasses($className) {
@@ -23,8 +24,12 @@ class AutoLoader extends Loader {
 		$this->loadByModuleDir('Services/', $className);
 	}
 
-	protected function loadHooks($className) {
-		$this->loadByModuleDir('Hooks/', $className);
+	protected function loadSignals($className) {
+		$this->loadByModuleDir('Signals/', $className);
+	}
+
+	protected function loadReceivers($className) {
+		$this->loadByModuleDir('Receivers/', $className);
 	}
 
 	protected function loadByModuleDir($moduleDirectory, $className) {

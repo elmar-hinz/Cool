@@ -19,13 +19,6 @@ class Container implements Singleton {
 		return $this->getInstance($name);
 	}
 
-	public function getHooks($hookType, $mixedCriteria) {
-		$names = $this->finder->getHooks($hookType, $mixedCriteria);
-		$hooks = array();
-		foreach($names as $name) $hook[] = $this->getInstance($name);
-		return $hooks;
-	}
-
 	public function getInstance($wandtedClass) {
 		$class =  $this->finder->getClass($wandtedClass);
 		$rc = new \ReflectionClass($class);

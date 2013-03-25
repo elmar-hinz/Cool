@@ -4,7 +4,7 @@ require_once(__DIR__.'/Loader.php');
 
 class DedicatedDirectoriesLoader extends Loader {
 
-	protected $classTypes = array('Services', 'Hooks');
+	protected $classTypes = array('Services', 'Receivers');
 
 	public function go() {
 		$moduleBases = $this->getModuleBases();

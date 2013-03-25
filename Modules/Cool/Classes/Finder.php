@@ -47,10 +47,6 @@ class Finder implements Singleton {
 		throw new \Exception('No service found for: ' . $interface);
 	}
 
-	public function getHooks($interface, $mixedCriteria = NULL) {
-		return array();
-	}
-
 }
 
 ?>
