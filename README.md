@@ -20,7 +20,7 @@ Features
 - [x] Autowiring
 - [x] Singletons
 - [x] Services
-- [ ] Hooks
+- [ ] Signals, Receivers
 - [x] Modularization
 - [x] Autoloading
 
@@ -76,7 +76,7 @@ Singletons
 
 By implementing the interface `\Cool\Singleton` an object is managed as 
 Singleton by the container, as long as it called by the conatainer
-methods `getInstance`, `getService` or `getHook`.
+methods `getInstance` or `getService`.
 
 ```php
 class SantaClaus implements \Cool\Singleton { ... }
@@ -157,8 +157,8 @@ into `Interfaces/`.
 > Instantiation is delegated to `getInstance`. That means that a service 
 > must provide a construtor that satisfies the criteria of `getInstance`.
 
-Hooks
-=====
+Signals and Receivers
+=====================
 
 Not implemented yet.
 
@@ -174,20 +174,21 @@ you have to do this in Form of the name.
 
 	Cool/Modules/MyCompanyMySuperModule/
 
-The subdirectories `Interfaces`, `Classes`, `Hooks` and `Services`
-are the places where the autoloader is looking for. If your pathes
-differ from this, you have to provide your own loading mechanism.
+The subdirectories `Interfaces`, `Classes`, `Services`, `Signals` 
+and `Receivers` are the places where the autoloader is looking for. If your 
+pathes differ from this, you have to provide your own loading mechanism.
 
 	MyModule/Interfaces/
 	MyModule/Classes/
-	MyModule/Hooks/
 	MyModule/Services/
+	MyModule/Signals/
+	MyModule/Receivers/
 
-Hooks and Services must stay in their matching directory to 
+Services and Receivers must stay in their matching directory to 
 be autoregistered.
 
-	MyModule/Hooks/
 	MyModule/Services/
+	MyModule/Receivers/
 
 Other recommended Directories
 
@@ -354,7 +355,7 @@ chmod +x Executables/sayHello.sh
 TODO
 ====
 
-* Hooks
+* Signals and Receivers
 * Add customized finders
 * Improve documentation
 * Improve documentation of the code
