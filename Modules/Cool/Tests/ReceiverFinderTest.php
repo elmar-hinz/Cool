@@ -9,35 +9,60 @@ class ReceiverFindeTest extends \PHPUnit_Framework_TestCase {
 		require_once(__DIR__.'/../../Cool/Classes/LoadTestHelper.php');
 		\Cool\LoadTestHelper::loadAll();
 		$this->sut = new ReceiverFinder();
+
+		// TestSignal
+		$createSignal = 'namespace Cool;
+			class TestSignal implements Signal {
+				static function send($object, $mixedData = NULL) {}
+				function getSender(){}
+				function getData(){}
+			}
+		';
+		if(!class_exists('\Cool\TestSignal')) eval($createSignal);
+
+		// TestSignalForeign
+		$createSignalForeign = 'namespace Cool;
+			class TestSignalForeign implements Signal {
+				static function send($object, $mixedData = NULL) {}
+				function getSender(){}
+				function getData(){}
+			}
+		';
+		if(!class_exists('\Cool\TestSignalForeign')) eval($createSignalForeign);
+
+		assert(class_exists('\Cool\TestSignal'));
+		assert(class_exists('\Cool\TestSignalForeign'));
+
 		// Receiver A
-		$createA = '
-			class TestReceiverA implements \Cool\Receiver {
+		$createA = 'namespace Cool;
+			class TestReceiverA implements Receiver {
 				static function listensTo() { return "\Cool\TestSignal"; }
-				function receive($signal) { }
+				function receive(\Cool\Signal $signal) { }
 			}
 		';
-		if(!class_exists('\TestReceiverA')) eval($createA);
+		if(!class_exists('\Cool\TestReceiverA')) eval($createA);
+
 		// Receiver B
-		$createB = '
-			class TestReceiverB implements \Cool\Receiver {
+		$createB = 'namespace Cool;
+			class TestReceiverB implements Receiver {
 				static function listensTo() { return "\Cool\TestSignal"; }
-				function receive($signal) { }
+				function receive(Signal $signal) { }
 			}
 		';
-		if(!class_exists('\TestReceiverB')) eval($createB);
+		if(!class_exists('\Cool\TestReceiverB')) eval($createB);
 
 		// Foreign Receiver
-		$createF = '
-			class TestReceiverF implements \Cool\Receiver {
+		$createF = 'namespace Cool;
+			class TestReceiverF implements Receiver {
 				static function listensTo() { return "\Cool\TestSignalForeign"; }
-				function receive($signal) { }
+				function receive(Signal $signal) { }
 			}
 		';
-		if(!class_exists('\TestReceiverF')) eval($createF);
+		if(!class_exists('\Cool\TestReceiverF')) eval($createF);
 
-		class_exists('\TestReceiverA');
-		class_exists('\TestReceiverB');
-		class_exists('\TestReceiverF');
+		assert(class_exists('\Cool\TestReceiverA'));
+		assert(class_exists('\Cool\TestReceiverB'));
+		assert(class_exists('\Cool\TestReceiverF'));
 	}
 
 	/**
@@ -53,9 +78,9 @@ class ReceiverFindeTest extends \PHPUnit_Framework_TestCase {
 	*/
 	public function getReceiversForSignal_works() {
 		$receivers = $this->sut->getReceiversForSignal('\Cool\TestSignal');
-		$this->assertContains('TestReceiverA', $receivers);
-		$this->assertContains('TestReceiverB', $receivers);
-		$this->assertNotContains('TestReceiverF', $receivers);
+		$this->assertContains('Cool\TestReceiverA', $receivers);
+		$this->assertContains('Cool\TestReceiverB', $receivers);
+		$this->assertNotContains('Cool\TestReceiverF', $receivers);
 	}
 
 	/**

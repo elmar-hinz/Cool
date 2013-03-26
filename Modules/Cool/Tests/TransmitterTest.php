@@ -20,7 +20,7 @@ class TransmitterTest extends \PHPUnit_Framework_TestCase {
 		$createA = '
 			class TestReceiverA implements \Cool\Receiver {
 				static function listensTo() { return "\Cool\TestSignal"; }
-				function go($sender, $data = NULL) { }
+				function receive(\Cool\Signal $signal) { }
 			}
 		';
 		if(!class_exists('\TestReceiverA')) eval($createA);
@@ -29,7 +29,7 @@ class TransmitterTest extends \PHPUnit_Framework_TestCase {
 		$createB = '
 			class TestReceiverB implements \Cool\Receiver {
 				static function listensTo() { return "\Cool\TestSignal"; }
-				function go($sender, $data = NULL) { }
+				function receive(\Cool\Signal $signal) { }
 			}
 		';
 		if(!class_exists('\TestReceiverB')) eval($createB);

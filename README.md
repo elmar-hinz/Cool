@@ -187,7 +187,10 @@ that itself implementes the interface `\Cool\Signal`.
 ```php
 class MySignal extends \Cool\AbstractSignal { ... }
 ```
-Signals are called by the static message send. 
+Signals are called by the static message send.  
+
+There is nothing like signal injection, because signals are strongly
+related to the class they are send by.
 
 ```php
 MySignal::send($this, $optionallyMixedData);
@@ -199,12 +202,17 @@ The second parameter is optionally any data that is expected by the signal.
 ```php
 class MySpcialSignal extends \Cool\AbstractSignal { 
 
-	static function send($sender, \SpecialClass $specialObject) {
+	/**
+	* @param object the sender
+	* @param \SpecialClass the special data
+	*/
+	static function send($sender, $specialObject) {
+		assert($specialObject instanceOf \SpecialClass);
 		parent::send($sender, $specialObject);
 	}
 
 	/**
-	* @return \SpecialClass
+	* @return \SpecialClass the special data
 	*/
 	function getSpecialObject() {
 		return $this->getData();
@@ -224,9 +232,6 @@ module directory `Receivers`. The static method `listensTo` returns
 the implementation of `\Cool\Signal` to listen to. That is all to
 be done to register a receiver.
 
-The method receive accepts a `\Cool\Signal` as parameter. It is 
-considered as good style to specialize this to the expected signal. 
-
 It's up to the receiver what to do with the signal.
 
 ```php
@@ -234,7 +239,13 @@ class MyReceiver implements \Cool\Receiver {
 
 	static functions listensTo() { return 'MySignal'; }
 
-	function receive(MySignal $signal) { ...  }
+	/**
+	* @param MySignal the expected signal
+	*/
+	function receive(\Cool\Signal $signal) { 
+		assert($signal instanceOf self::listensTo());
+		...  
+	}
 
 }
 ```

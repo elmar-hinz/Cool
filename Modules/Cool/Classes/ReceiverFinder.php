@@ -10,20 +10,25 @@ class ReceiverFinder implements Singleton {
 	}
 
 	public function getReceiversForSignal($signal) {
-		$list = array();
-		foreach($this->register as $class) 
-			if($class::listensTo() == $signal) 
-				$list[] = $class;
-		return $list;
+		if(isset($this->register[$signal]))
+			return $this->register[$signal];
+		else 
+			return array();
 	}
 
 	protected function register() {
 		$classes = get_declared_classes();
 		foreach($classes as $class) {
 			$ref = new \ReflectionClass($class);
-			if(!$ref->isAbstract() && $ref->implementsInterface($this->receiverInterface))
-				$this->register[] = $class;
+			if(!$ref->isAbstract() && $ref->implementsInterface($this->receiverInterface)) {
+				$signal = $this->getSignalNameForClass($class);
+				$this->register[$signal][] = $class;
+			}
 		}
+	}
+
+	protected function getSignalNameForClass($class) {
+				return $class::listensTo();
 	}
 
 }
