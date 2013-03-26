@@ -20,7 +20,7 @@ Features
 - [x] Autowiring
 - [x] Singletons
 - [x] Services
-- [x] Signals, Receivers
+- [x] Signals, Receivers, Hooks
 - [x] Modularization
 - [x] Autoloading
 
@@ -157,8 +157,8 @@ into `Interfaces/`.
 > Instantiation is delegated to `getInstance`. That means that a service 
 > must provide a construtor that satisfies the criteria of `getInstance`.
 
-Signals and Receivers
-=====================
+Signals, Receivers, Hooks
+==========================
 
 Signals are messesages, that are send at certain events in the code,
 to inform others about them. They are typically targeted to be used 
@@ -200,7 +200,7 @@ The first parameter of `send` is the sending object.
 The second parameter is optionally any data that is expected by the signal.
 
 ```php
-class MySpcialSignal extends \Cool\AbstractSignal { 
+class MySpecialSignal extends \Cool\AbstractSignal { 
 
 	/**
 	* @param object the sender
