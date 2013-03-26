@@ -11,7 +11,7 @@ interface Receiver {
 	* @param \Cool\Signal the received signal
 	* @returns void 
 	*/
-	function receive($signal);
+	function receive(\Cool\Signal $signal);
 	
 }
 
