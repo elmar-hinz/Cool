@@ -20,7 +20,7 @@ Features
 - [x] Autowiring
 - [x] Singletons
 - [x] Services
-- [ ] Signals, Receivers
+- [x] Signals, Receivers
 - [x] Modularization
 - [x] Autoloading
 
@@ -160,7 +160,121 @@ into `Interfaces/`.
 Signals and Receivers
 =====================
 
-Not implemented yet.
+Signals are messesages, that are send at certain events in the code,
+to inform others about them. They are typically targeted to be used 
+by other modules. Hence, they are designed to support the other 
+developers as far as possible.
+
+### 1.) Visibility 
+
+Signals are declared as classes in the module directory `Signals` to give them visibiltiy.
+
+### 2.) Documentation 
+
+The very same place is targeted to document them.
+
+### 3.) Augmentation 
+
+Signals may be augmented by special getters to make them 
+more easy and intuitive to use by the receivers.
+
+Signals
+-------
+
+They create and broadcast themself, by extending the class `AbstractSignal`,
+that itself implementes the interface `\Cool\Signal`. 
+
+```php
+class MySignal extends \Cool\AbstractSignal { ... }
+```
+Signals are called by the static message send. 
+
+```php
+MySignal::send($this, $optionallyMixedData);
+```
+
+The first parameter of `send` is the sending object. 
+The second parameter is optionally any data that is expected by the signal.
+
+```php
+class MySpcialSignal extends \Cool\AbstractSignal { 
+
+	static function send($sender, \SpecialClass $specialObject) {
+		parent::send($sender, $specialObject);
+	}
+
+	/**
+	* @return \SpecialClass
+	*/
+	function getSpecialObject() {
+		return $this->getData();
+	}
+}
+```
+
+The method `send` can be specialized and special getters can by added.
+
+The sender can by accessed by the method `getSender()`.
+
+Receivers
+---------
+
+Receivers implement the interface `\Cool\Receivers`. They stay in the
+module directory `Receivers`. The static method `listensTo` returns
+the implementation of `\Cool\Signal` to listen to. That is all to
+be done to register a receiver.
+
+The method receive accepts a `\Cool\Signal` as parameter. It is 
+considered as good style to specialize this to the expected signal. 
+
+It's up to the receiver what to do with the signal.
+
+```php
+class MyReceiver implements \Cool\Receiver { 
+
+	static functions listensTo() { return 'MySignal'; }
+
+	function receive(MySignal $signal) { ...  }
+
+}
+```
+
+Using signals as hooks
+----------------------
+
+The static method `send` of the signal returns an iterator `\Cool\Receivers`
+with all the listening receivers. By iterating the receivers and calling
+methods on them the signalling mechanism can be used like a hook.
+
+For this to work the listening receivers must provide the method that is
+called by the sender, to hook them in.
+
+```php
+class MyClass { 
+
+	function myFunction() { 
+		$receivers = MySignal::send($this);
+		foreach($receivers as $receiver) {
+			$receiver->doSomthing();
+		}
+	}
+
+}
+```
+
+It is a good idea to provide a hook interface defining the methods the
+receiver must implement to be usable by this hook.
+
+```php
+	function myFunction() { 
+		$receivers = MySignal::send($this);
+		foreach($receivers as $receiver) {
+			if(!$receiver isInstanceOf MyHookInterface) throw new Exception('invalid hook');
+			$receiver->doSomthing();
+		}
+	}
+```
+
 
 Modularization
 ==============
