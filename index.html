@@ -59,7 +59,7 @@
 <li>[x] Autowiring</li>
 <li>[x] Singletons</li>
 <li>[x] Services</li>
-<li>[ ] Hooks</li>
+<li>[x] Signals, Receivers</li>
 <li>[x] Modularization</li>
 <li>[x] Autoloading</li>
 </ul><h1>Installation</h1>
@@ -112,7 +112,7 @@ through configuration.</p>
 
 <p>By implementing the interface <code>\Cool\Singleton</code> an object is managed as 
 Singleton by the container, as long as it called by the conatainer
-methods <code>getInstance</code>, <code>getService</code> or <code>getHook</code>.</p>
+methods <code>getInstance</code> or <code>getService</code>.</p>
 
 <div class="highlight"><pre><span class="k">class</span> <span class="nc">SantaClaus</span> <span class="k">implements</span> <span class="nx">\Cool\Singleton</span> <span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
 </pre></div>
@@ -198,9 +198,125 @@ MyModule/Services/PizzaCourier.php
 must provide a construtor that satisfies the criteria of <code>getInstance</code>.</p>
 </blockquote>
 
-<h1>Hooks</h1>
+<h1>Signals and Receivers</h1>
 
-<p>Not implemented yet.</p>
+<p>Signals are messesages, that are send at certain events in the code,
+to inform others about them. They are typically targeted to be used 
+by other modules. Hence, they are designed to support the other 
+developers as far as possible.</p>
+
+<h3>1.) Visibility</h3>
+
+<p>Signals are declared as classes in the module directory <code>Signals</code> to give them visibiltiy.</p>
+
+<h3>2.) Documentation</h3>
+
+<p>The very same place is targeted to document them.</p>
+
+<h3>3.) Augmentation</h3>
+
+<p>Signals may be augmented by special getters to make them 
+more easy and intuitive to use by the receivers.</p>
+
+<h2>Signals</h2>
+
+<p>They create and broadcast themself, by extending the class <code>AbstractSignal</code>,
+that itself implementes the interface <code>\Cool\Signal</code>. </p>
+
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">MySignal</span> <span class="k">extends</span> <span class="nx">\Cool\AbstractSignal</span> <span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+</pre></div>
+
+<p>Signals are called by the static message send.  </p>
+
+<p>There is nothing like signal injection, because signals are strongly
+related to the class they are send by.</p>
+
+<div class="highlight"><pre><span class="nx">MySignal</span><span class="o">::</span><span class="na">send</span><span class="p">(</span><span class="nv">$this</span><span class="p">,</span> <span class="nv">$optionallyMixedData</span><span class="p">);</span>
+</pre></div>
+
+<p>The first parameter of <code>send</code> is the sending object. 
+The second parameter is optionally any data that is expected by the signal.</p>
+
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">MySpcialSignal</span> <span class="k">extends</span> <span class="nx">\Cool\AbstractSignal</span> <span class="p">{</span> 
+
+    <span class="sd">/**</span>
+<span class="sd">    * @param object the sender</span>
+<span class="sd">    * @param \SpecialClass the special data</span>
+<span class="sd">    */</span>
+    <span class="k">static</span> <span class="k">function</span> <span class="nf">send</span><span class="p">(</span><span class="nv">$sender</span><span class="p">,</span> <span class="nv">$specialObject</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nb">assert</span><span class="p">(</span><span class="nv">$specialObject</span> <span class="nx">instanceOf</span> <span class="nx">\SpecialClass</span><span class="p">);</span>
+        <span class="k">parent</span><span class="o">::</span><span class="na">send</span><span class="p">(</span><span class="nv">$sender</span><span class="p">,</span> <span class="nv">$specialObject</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="sd">/**</span>
+<span class="sd">    * @return \SpecialClass the special data</span>
+<span class="sd">    */</span>
+    <span class="k">function</span> <span class="nf">getSpecialObject</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">getData</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>The method <code>send</code> can be specialized and special getters can by added.</p>
+
+<p>The sender can by accessed by the method <code>getSender()</code>.</p>
+
+<h2>Receivers</h2>
+
+<p>Receivers implement the interface <code>\Cool\Receivers</code>. They stay in the
+module directory <code>Receivers</code>. The static method <code>listensTo</code> returns
+the implementation of <code>\Cool\Signal</code> to listen to. That is all to
+be done to register a receiver.</p>
+
+<p>It's up to the receiver what to do with the signal.</p>
+
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">MyReceiver</span> <span class="k">implements</span> <span class="nx">\Cool\Receiver</span> <span class="p">{</span> 
+
+    <span class="k">static</span> <span class="nx">functions</span> <span class="nx">listensTo</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="s1">'MySignal'</span><span class="p">;</span> <span class="p">}</span>
+
+    <span class="sd">/**</span>
+<span class="sd">    * @param MySignal the expected signal</span>
+<span class="sd">    */</span>
+    <span class="k">function</span> <span class="nf">receive</span><span class="p">(</span><span class="nx">\Cool\Signal</span> <span class="nv">$signal</span><span class="p">)</span> <span class="p">{</span> 
+        <span class="nb">assert</span><span class="p">(</span><span class="nv">$signal</span> <span class="nx">instanceOf</span> <span class="nx">self</span><span class="o">::</span><span class="na">listensTo</span><span class="p">());</span>
+        <span class="o">...</span>  
+    <span class="p">}</span>
+
+<span class="p">}</span>
+</pre></div>
+
+<h2>Using signals as hooks</h2>
+
+<p>The static method <code>send</code> of the signal returns an iterator <code>\Cool\Receivers</code>
+with all the listening receivers. By iterating the receivers and calling
+methods on them the signalling mechanism can be used like a hook.</p>
+
+<p>For this to work the listening receivers must provide the method that is
+called by the sender, to hook them in.</p>
+
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">MyClass</span> <span class="p">{</span> 
+
+    <span class="k">function</span> <span class="nf">myFunction</span><span class="p">()</span> <span class="p">{</span> 
+        <span class="nv">$receivers</span> <span class="o">=</span> <span class="nx">MySignal</span><span class="o">::</span><span class="na">send</span><span class="p">(</span><span class="nv">$this</span><span class="p">);</span>
+        <span class="k">foreach</span><span class="p">(</span><span class="nv">$receivers</span> <span class="k">as</span> <span class="nv">$receiver</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$receiver</span><span class="o">-&gt;</span><span class="na">doSomthing</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+</pre></div>
+
+<p>It is a good idea to provide a hook interface defining the methods the
+receiver must implement to be usable by this hook.</p>
+
+<div class="highlight"><pre>    <span class="k">function</span> <span class="nf">myFunction</span><span class="p">()</span> <span class="p">{</span> 
+        <span class="nv">$receivers</span> <span class="o">=</span> <span class="nx">MySignal</span><span class="o">::</span><span class="na">send</span><span class="p">(</span><span class="nv">$this</span><span class="p">);</span>
+        <span class="k">foreach</span><span class="p">(</span><span class="nv">$receivers</span> <span class="k">as</span> <span class="nv">$receiver</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nv">$receiver</span> <span class="nx">isInstanceOf</span> <span class="nx">MyHookInterface</span><span class="p">)</span> <span class="k">throw</span> <span class="k">new</span> <span class="nx">Exception</span><span class="p">(</span><span class="s1">'invalid hook'</span><span class="p">);</span>
+            <span class="nv">$receiver</span><span class="o">-&gt;</span><span class="na">doSomthing</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+</pre></div>
 
 <h1>Modularization</h1>
 
@@ -215,21 +331,22 @@ you have to do this in Form of the name. </p>
 <pre><code>Cool/Modules/MyCompanyMySuperModule/
 </code></pre>
 
-<p>The subdirectories <code>Interfaces</code>, <code>Classes</code>, <code>Hooks</code> and <code>Services</code>
-are the places where the autoloader is looking for. If your pathes
-differ from this, you have to provide your own loading mechanism.</p>
+<p>The subdirectories <code>Interfaces</code>, <code>Classes</code>, <code>Services</code>, <code>Signals</code> 
+and <code>Receivers</code> are the places where the autoloader is looking for. If your 
+pathes differ from this, you have to provide your own loading mechanism.</p>
 
 <pre><code>MyModule/Interfaces/
 MyModule/Classes/
-MyModule/Hooks/
 MyModule/Services/
+MyModule/Signals/
+MyModule/Receivers/
 </code></pre>
 
-<p>Hooks and Services must stay in their matching directory to 
+<p>Services and Receivers must stay in their matching directory to 
 be autoregistered.</p>
 
-<pre><code>MyModule/Hooks/
-MyModule/Services/
+<pre><code>MyModule/Services/
+MyModule/Receivers/
 </code></pre>
 
 <p>Other recommended Directories</p>
@@ -392,7 +509,7 @@ mkdir Executables Configuration Interfaces Classes Services
 <h1>TODO</h1>
 
 <ul>
-<li>Hooks</li>
+<li>Signals and Receivers</li>
 <li>Add customized finders</li>
 <li>Improve documentation</li>
 <li>Improve documentation of the code</li>
