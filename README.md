@@ -3,11 +3,12 @@ Cool - a tiny autowiring PHP framework
 ======================================
 
  * Author: Elmar Hinz <t3elmar@googlemail.com>
- * Homepage: 
  * Version: 0.x.x
  * Stability: Alpha/Usable
  * License: MIT
  * Last update: See [ChangeLog](https://github.com/t3elmar/Cool/blob/master/ChangeLog)
+ * Homepage: http://t3elmar.github.com/Cool/
+ * Github: https://github.com/t3elmar/Cool/
  * OS: tested on POSIX i.e. Mac OS X, Unix, Linux, BSD
  * Dependencies: 
    * php > 5.3
