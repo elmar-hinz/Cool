@@ -28,7 +28,8 @@ class DedicatedDirectoriesLoader extends Loader {
 	}
 
 	protected function handleFile($fileInfo, $type) {
-		if($fileInfo->isFile() && $fileInfo->getExtension() == 'php') {
+		// if($fileInfo->isFile() && $fileInfo->getExtension() == 'php') {
+		if($fileInfo->isFile() && pathinfo($fileInfo->getFilename(), PATHINFO_EXTENSION) == 'php') {
 			ob_start();
 			require_once($fileInfo->getPathname());
 			ob_end_clean();
