@@ -35,7 +35,10 @@ class Container implements Singleton {
 	private function makeInstance($reflectionClass) {
 		$argumentNames= $this->getArgumentNames($reflectionClass);
 		$arguments = $this->instantiateArguments($argumentNames);
-		return $reflectionClass->newInstanceArgs($arguments);
+		if(empty($arguments)) 
+			return $reflectionClass->newInstanceArgs();
+		else 
+			return $reflectionClass->newInstanceArgs($arguments);
 	}
 
 	private function getArgumentNames($rc) {
