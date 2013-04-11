@@ -11,7 +11,7 @@ Cool - a tiny autowiring PHP framework
  * Github: https://github.com/t3elmar/Cool/
  * OS: tested on POSIX i.e. Mac OS X, Unix, Linux, BSD
  * Dependencies: 
-   * php > 5.3
+   * php > 5.3.3
    * git (recommended for installation)
  * The dependencies ship under their own licenses and are not part of this program
 	
